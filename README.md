@@ -8,10 +8,10 @@
 
 ## Equipe Desenvolvedora (Grupo 05)
 - **Paulo Cesar Leite** (Representante / Back-end & Documentação)
-- **Carlos Henrique** (Front-end & Algoritmos)
-- **Higor Claro** (Front-end & Prototipação)
-- **João Bosco** (Back-end & Banco de Dados)
-- **Victor Hugo** (Front-end & Integração)
+- **Carlos Henrique de Andrade** (Front-end & Algoritmos)
+- **Higor Claro da Silva** (Front-end & Prototipação)
+- **João Bosco Salviano de Carvalho** (Back-end & Banco de Dados)
+- **Victor Hugo Concolato Neves** (Front-end & Integração)
 
 ---
 
