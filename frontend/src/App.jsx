@@ -4,7 +4,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 
-// Componente principal gerenciador de rotas
+// Componente gerenciador de rotas
 // Higor deixando a base pronta, depois o Victor vem conectando o resto das telas
 function App() {
   return (
