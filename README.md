@@ -1,5 +1,5 @@
 # conecta-ellp-utfpr
-# 🔌 Conecta ELLP
+# Conecta ELLP
 **Plataforma Integrada de Gestão e Triagem Baseada em Perfis para o Projeto de Extensão ELLP.**
 
 > Projeto desenvolvido para a disciplina de Certificadora da Competência Identitária - UTFPR Câmpus Cornélio Procópio (Curso de Análise e Desenvolvimento de Sistemas).

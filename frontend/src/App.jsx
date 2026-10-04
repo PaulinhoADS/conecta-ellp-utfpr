@@ -3,16 +3,22 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Quiz from './pages/Quiz';
+import Footer from './components/Footer';
 
-// Componente gerenciador de rotas
-// Higor deixando a base pronta, depois o Victor vem conectando o resto das telas
+// Componente principal do aplicativo
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {/* Futuras rotas vão entrar aqui (ex: /quiz, /login, /dashboard) */}
-      </Routes>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/quiz" element={<Quiz />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
