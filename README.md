@@ -25,7 +25,7 @@ O ELLP democratiza a tecnologia, mas o processo de expansão esbarra na burocrac
 
 ---
 
-## Especificações e Tecnologias
+## Especificações, Tecnologias e Documentação
 
 O sistema será uma *Single Page Application* (SPA) dividida em módulos para Escolas/Alunos e para a Gestão do ELLP, utilizando as seguintes tecnologias:
 
@@ -34,6 +34,13 @@ O sistema será uma *Single Page Application* (SPA) dividida em módulos para Es
 - **Banco de Dados:** PostgreSQL com Sequelize (ORM).
 - **Lógica (O Motor de Recomendação):** Algoritmos baseados em árvores de decisão booleanas (simulando operações de entrada/saída e portas lógicas) para análise do Quiz e um algoritmo guloso (Greedy) para preenchimento ótimo das vagas limitadas.
 - **Ferramentas e Deploy:** Visual Studio Code, Figma (Prototipação) e Git/GitHub. A hospedagem do código será no GitHub, e o deploy da aplicação (front e back) utilizará planos gratuitos de serviços em nuvem.
+
+### Diagrama de Banco de Dados
+![Diagrama ER Conecta ELLP](docs/DER-BD.png)
+
+### Protótipos de Interface (Versão Inicial)
+![Tela Home](docs/prototipo-tela-home.png)
+![Tela do Quiz](docs/prototipo-tela-quiz.png)
 
 ### Arquitetura
 A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, garantindo o total desacoplamento das regras de negócio, acesso a dados e roteamento da API. A comunicação entre Front-end e Back-end ocorrerá via JSON em rotas seguras.
