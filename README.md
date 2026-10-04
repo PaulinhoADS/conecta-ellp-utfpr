@@ -36,10 +36,16 @@ O sistema será uma *Single Page Application* (SPA) dividida em módulos para Es
 - **Ferramentas e Deploy:** Visual Studio Code, Figma (Prototipação) e Git/GitHub. A hospedagem do código será no GitHub, e o deploy da aplicação (front e back) utilizará planos gratuitos de serviços em nuvem.
 
 ### Diagrama de Banco de Dados
+
+
 [Clique aqui para visualizar o Diagrama Entidade-Relacionamento do Projeto](docs/DER-BD.png)
 
 ### Protótipos de Interface (Versão Inicial)
+
+
 [Clique aqui para visualizar o Protótipo da Tela Home](docs/prototipo-tela-home.png)
+
+
 [Clique aqui para visualizar o Protótipo da Tela do Quiz](docs/prototipo-tela-quiz.png)
 
 ### Arquitetura
