@@ -12,7 +12,7 @@ const Aluno = require('./models/Aluno');
 const app = express();
 
 // middlewares
-// cors permite que nosso front-end converse com essa API sem bloqueio
+// cors permite que o front-end converse com essa API sem bloqueio
 app.use(cors()); 
 // avisa o express pra entender os dados que vêm em formato JSON
 app.use(express.json()); 
@@ -25,7 +25,7 @@ sequelize.sync({ alter: true }).then(() => {
   console.error('Erro ao sincronizar as tabelas:', err);
 });
 
-// Criando uma rota de teste simples pra gente validar se o servidor subiu
+// Criando uma rota de teste simples pra validar se o servidor subiu
 app.get('/teste', (req, res) => {
   res.json({ mensagem: 'Servidor do Conecta ELLP rodando perfeitamente!' });
 });

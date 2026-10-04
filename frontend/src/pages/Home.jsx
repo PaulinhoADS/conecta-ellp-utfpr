@@ -7,7 +7,7 @@ const Home = () => {
       <h1>🔌 Bem-vindo ao Conecta ELLP</h1>
       <p>A ponte digital entre a UTFPR e as Escolas da Comunidade.</p>
       
-      {/* Aqui depois vamos colocar o componente bonitão com CSS, por enquanto é só o esqueleto */}
+      {/* Aqui depois vamos colocar o componente com CSS, por enquanto é só a base */}
       <div style={{ marginTop: '30px', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
         <h2>É aluno novo?</h2>
         <p>Descubra a oficina ideal para o seu perfil!</p>

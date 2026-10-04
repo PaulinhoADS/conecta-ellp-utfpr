@@ -29,7 +29,7 @@ const Aluno = sequelize.define('Aluno', {
 });
 
 // Relacionamento (1 Escola tem muitos Alunos)
-// O João Bosco estruturou certinho a chave estrangeira aqui
+// João Bosco estruturou a chave estrangeira aqui
 Escola.hasMany(Aluno, { foreignKey: 'escolaId' });
 Aluno.belongsTo(Escola, { foreignKey: 'escolaId' });
 
