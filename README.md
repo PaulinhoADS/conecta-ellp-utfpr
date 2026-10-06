@@ -35,6 +35,11 @@ O sistema será uma *Single Page Application* (SPA) dividida em módulos para Es
 - **Lógica (O Motor de Recomendação):** Algoritmos baseados em árvores de decisão booleanas (simulando operações de entrada/saída e portas lógicas) para análise do Quiz e um algoritmo guloso (Greedy) para preenchimento ótimo das vagas limitadas.
 - **Ferramentas e Deploy:** Visual Studio Code e Git/GitHub. A hospedagem do código será no GitHub, e o deploy da aplicação (front e back) utilizará planos gratuitos de serviços em nuvem.
 
+### Levantamento de Requisitos (Ágil)
+
+Para visualizar o escopo detalhado de funcionalidades e restrições técnicas do projeto, mapeados durante as Sprints iniciais:
+[Clique aqui para ler os Requisitos Funcionais e Não Funcionais (RF / RNF)](docs/requisitos.md)
+
 ### Diagrama de Banco de Dados
 
 
