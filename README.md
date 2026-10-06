@@ -60,3 +60,23 @@ A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, 
 - **Outubro (Semanas 3 e 4):** Desenvolvimento do Front-end (React) e avanço do Back-end (Autenticação JWT).
 - **Novembro (Semanas 1 e 2):** Implementação da lógica de Algoritmos (Quiz e Distribuição de vagas) e Integração total Front x Back.
 - **Novembro (Semanas 3 e 4):** Testes finais, correção de bugs, validação com o ELLP, redação do Relatório Final e gravação dos vídeos individuais (Entrega Final 30/11).
+
+---
+
+## Como rodar este projeto na sua máquina
+
+### Pré-requisitos
+- Node.js instalado.
+- PostgreSQL rodando localmente.
+
+### Passos para o Back-end
+1. Clone o repositório.
+2. Abra o terminal na pasta `backend` e rode `npm install`.
+3. Crie um banco de dados no seu PostgreSQL chamado `ellp_db`.
+4. Copie o arquivo `.env.example`, renomeie para `.env` e preencha com a senha do seu banco local.
+5. Rode `npm run dev` (ou `node server.js`) para iniciar a API. As tabelas serão criadas automaticamente pelo Sequelize.
+
+### Passos para o Front-end
+1. Abra um novo terminal na pasta `frontend`.
+2. Rode `npm install`.
+3. Rode `npm run dev` e acesse o link gerado no terminal.
