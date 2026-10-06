@@ -33,7 +33,7 @@ O sistema será uma *Single Page Application* (SPA) dividida em módulos para Es
 - **Back-end:** Node.js, Express, Autenticação JWT.
 - **Banco de Dados:** PostgreSQL com Sequelize (ORM).
 - **Lógica (O Motor de Recomendação):** Algoritmos baseados em árvores de decisão booleanas (simulando operações de entrada/saída e portas lógicas) para análise do Quiz e um algoritmo guloso (Greedy) para preenchimento ótimo das vagas limitadas.
-- **Ferramentas e Deploy:** Visual Studio Code, Figma (Prototipação) e Git/GitHub. A hospedagem do código será no GitHub, e o deploy da aplicação (front e back) utilizará planos gratuitos de serviços em nuvem.
+- **Ferramentas e Deploy:** Visual Studio Code e Git/GitHub. A hospedagem do código será no GitHub, e o deploy da aplicação (front e back) utilizará planos gratuitos de serviços em nuvem.
 
 ### Diagrama de Banco de Dados
 
@@ -55,7 +55,7 @@ A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, 
 
 ## Cronograma de Execução
 
-- **Setembro (Semanas 3 e 4):** Levantamento de requisitos, estruturação do repositório, modelagem do Banco de Dados (físico/lógico) e prototipação no Figma.
+- **Setembro (Semanas 3 e 4):** Levantamento de requisitos, estruturação do repositório, modelagem do Banco de Dados (físico/lógico) e prototipação.
 - **Outubro (Semanas 1 e 2):** Início do Back-end (BD, classes, rotas CRUD), gravação do Pitch de apresentação e elaboração dos slides para o Seminário de Relatório (Entrega 16/10).
 - **Outubro (Semanas 3 e 4):** Desenvolvimento do Front-end (React) e avanço do Back-end (Autenticação JWT).
 - **Novembro (Semanas 1 e 2):** Implementação da lógica de Algoritmos (Quiz e Distribuição de vagas) e Integração total Front x Back.
