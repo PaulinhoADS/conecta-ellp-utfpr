@@ -1,0 +1,181 @@
+/* src/components/Header.css */
+
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--azul-principal);
+    box-shadow: 0 2px 10px rgba(0, 41, 96, 0.25);
+}
+
+.site-header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+}
+
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--fonte-titulo);
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--branco);
+    text-decoration: none;
+}
+
+.site-header__brand-mark {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--laranja);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35);
+}
+
+.site-header__list {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-header__link,
+.site-header__link:link,
+.site-header__link:visited {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--branco);
+    text-decoration: none;
+    background-color: #ffffff35;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.site-header__link:hover {
+    background-color: #ffffff59;
+}
+
+.site-header__link--active,
+.site-header__link--active:link,
+.site-header__link--active:visited,
+.site-header__link--active:hover {
+    color: var(--azul-secundario);
+    background-color: var(--branco);
+}
+
+.site-header__toggle {
+    display: none;
+}
+
+.site-header__overlay {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .site-header__brand {
+        font-size: 22px;
+    }
+
+    .site-header__toggle {
+        position: relative;
+        z-index: 1002;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 42px;
+        height: 42px;
+        padding: 10px;
+        background-color: #ffffff35;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .site-header__toggle-bar {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: var(--branco);
+        border-radius: 2px;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .site-header__toggle--open .site-header__toggle-bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .site-header__toggle--open .site-header__toggle-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .site-header__toggle--open .site-header__toggle-bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .site-header__nav {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1001;
+        width: 260px;
+        max-width: 80%;
+        padding: 80px 20px 20px;
+        background-color: var(--branco);
+        visibility: hidden;
+        transform: translateX(-100%);
+        transition: transform 0.4s, visibility 0.4s;
+    }
+
+    .site-header__nav--open {
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    .site-header__list {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .site-header__item {
+        border-bottom: 1px solid var(--azul-claro);
+    }
+
+    .site-header__link,
+    .site-header__link:link,
+    .site-header__link:visited {
+        display: block;
+        padding: 14px 10px;
+        color: var(--azul-secundario);
+        background-color: transparent;
+        border-radius: 4px;
+    }
+
+    .site-header__link:hover {
+        color: var(--branco);
+        background-color: var(--azul-principal);
+    }
+
+    .site-header__link--active,
+    .site-header__link--active:link,
+    .site-header__link--active:visited,
+    .site-header__link--active:hover {
+        color: var(--azul-escuro);
+        background-color: var(--azul-claro);
+    }
+
+    .site-header__overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: block;
+        background-color: rgba(0, 41, 96, 0.55);
+    }
+}
