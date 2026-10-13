@@ -1,0 +1,177 @@
+/* style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap');
+
+:root {
+    --azul-principal: #007BCC;
+    --azul-secundario: #026CB8;
+    --azul-escuro: #002960;
+    --azul-claro: #AADCFF;
+    --azul-faixa: #ADD5F0;
+    --azul-card: #0760AA;
+    --azul-profundo: #0D5398;
+    --laranja: #F68D2E;
+    --preto: #404040;
+    --cinza: #707070;
+    --branco: #FFFFFF;
+    --fonte-titulo: 'Sniglet', 'Trebuchet MS', sans-serif;
+    --fonte-texto: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--fonte-texto);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--branco);
+    background-color: var(--azul-principal);
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+img,
+svg {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid var(--laranja);
+    outline-offset: 3px;
+}
+
+.my-container {
+    width: min(920px, 90%);
+    margin: 0 auto;
+}
+
+.title {
+    margin: 0;
+    font-family: var(--fonte-titulo);
+    font-weight: 400;
+    font-size: 45px;
+    text-align: center;
+}
+
+.btn-pill {
+    display: inline-block;
+    padding: 15px 28px;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 35px;
+    box-shadow: 2px 3px 6px rgba(48, 48, 48, 0.2);
+    cursor: pointer;
+    transition: background-color 0.6s, color 0.6s, border-color 0.6s, transform 0.3s;
+}
+
+.btn-pill:hover {
+    transform: translateY(-2px);
+}
+
+.btn-pill--white {
+    background-color: var(--branco);
+    color: var(--azul-escuro);
+}
+
+.btn-pill--white:hover {
+    background-color: #0D549A;
+    color: var(--branco);
+}
+
+.btn-pill--orange {
+    background-color: var(--laranja);
+    color: var(--azul-escuro);
+}
+
+.btn-pill--orange:hover {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+}
+
+.btn-pill--blue {
+    background-color: var(--azul-principal);
+    color: var(--branco);
+}
+
+.btn-pill--blue:hover {
+    background-color: var(--azul-escuro);
+}
+
+.btn-pill--outline {
+    background-color: transparent;
+    color: var(--branco);
+    border-color: var(--branco);
+    box-shadow: none;
+}
+
+.btn-pill--outline:hover {
+    background-color: var(--branco);
+    color: var(--azul-escuro);
+}
+
+footer {
+    padding: 40px 5% 24px;
+    text-align: center;
+    background-color: var(--azul-escuro);
+}
+
+footer p {
+    max-width: 920px;
+    margin: 0 auto 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+footer p:first-child {
+    font-family: var(--fonte-titulo);
+    font-size: 22px;
+}
+
+footer p:last-child {
+    margin-top: 24px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.644);
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 36px;
+    }
+
+    .btn-pill {
+        padding: 13px 22px;
+        font-size: 16px;
+    }
+}
