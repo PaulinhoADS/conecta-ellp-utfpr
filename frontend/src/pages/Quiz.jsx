@@ -1,57 +1,136 @@
 // frontend/src/pages/Quiz.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
+import './Quiz.css';
+
+const perguntas = [
+  {
+    id: 'quebra-cabecas',
+    enunciado: 'Você prefere resolver quebra-cabeças matemáticos ou desenhar personagens?',
+    opcoes: [
+      { texto: 'Resolver quebra-cabeças matemáticos', valor: 1 },
+      { texto: 'Desenhar personagens', valor: 0 },
+    ],
+  },
+  {
+    id: 'brinquedo-quebrado',
+    enunciado:
+      'Quando um brinquedo quebra, você tenta entender as engrenagens ou foca em deixá-lo bonito de novo?',
+    opcoes: [
+      { texto: 'Tento entender as engrenagens', valor: 1 },
+      { texto: 'Foco em deixá-lo bonito de novo', valor: 0 },
+    ],
+  },
+  {
+    id: 'regras-ou-liberdade',
+    enunciado:
+      'Você gosta de seguir regras estritas para chegar a um resultado ou prefere ter liberdade criativa?',
+    opcoes: [
+      { texto: 'Seguir regras estritas para chegar a um resultado', valor: 1 },
+      { texto: 'Ter liberdade criativa', valor: 0 },
+    ],
+  },
+];
+
+const PONTOS_MINIMOS_LOGICA = 2;
+
+const resultados = {
+  logica: 'Oficina Recomendada: Lógica de Programação e Algoritmos (Python)',
+  visual: 'Oficina Recomendada: Criação de Jogos e Web (Scratch / HTML)',
+};
 
 const Quiz = () => {
-  const [pontosLogica, setPontosLogica] = useState(0);
-  const [etapa, setEtapa] = useState(1);
+  const [respostas, setRespostas] = useState({});
   const [resultado, setResultado] = useState('');
 
-  // Carlos implementou aqui o Algoritmo de Árvore de Decisão Simples
-  const responder = (valor) => {
-    const novaPontuacao = pontosLogica + valor;
-    setPontosLogica(novaPontuacao);
-    
-    if (etapa === 3) {
-      // Lógica Booleana: Se pontuação >= 2, Lógica Pura (Python/C). Senão, Visual (Web/Scratch)
-      if (novaPontuacao >= 2) {
-        setResultado('Oficina Recomendada: Lógica de Programação e Algoritmos (Python)');
-      } else {
-        setResultado('Oficina Recomendada: Criação de Jogos e Web (Scratch / HTML)');
-      }
-    } else {
-      setEtapa(etapa + 1);
+  const totalRespondidas = Object.keys(respostas).length;
+  const todasRespondidas = totalRespondidas === perguntas.length;
+
+  const selecionarOpcao = (idPergunta, valor) => {
+    setRespostas((atual) => ({ ...atual, [idPergunta]: valor }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!todasRespondidas) {
+      return;
     }
+
+    const pontosLogica = Object.values(respostas).reduce((soma, valor) => soma + valor, 0);
+
+    setResultado(pontosLogica >= PONTOS_MINIMOS_LOGICA ? resultados.logica : resultados.visual);
+  };
+
+  const reiniciar = () => {
+    setRespostas({});
+    setResultado('');
   };
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif', backgroundColor: '#f4f7f6', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', maxWidth: '500px', width: '100%', textAlign: 'center' }}>
-        <h2 style={{ color: '#2c3e50' }}>🧩 Quiz Perfil Tech</h2>
-        
-        {!resultado ? (
-          <>
-            <p style={{ color: '#7f8c8d', marginBottom: '30px' }}>Pergunta {etapa} de 3</p>
-            {etapa === 1 && <p style={{ fontSize: '18px' }}>Você prefere resolver quebra-cabeças matemáticos ou desenhar personagens?</p>}
-            {etapa === 2 && <p style={{ fontSize: '18px' }}>Quando um brinquedo quebra, você tenta entender as engrenagens ou foca em deixá-lo bonito de novo?</p>}
-            {etapa === 3 && <p style={{ fontSize: '18px' }}>Você gosta de seguir regras estritas para chegar a um resultado ou prefere ter liberdade criativa?</p>}
-            
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
-              <button onClick={() => responder(1)} style={{ padding: '10px 20px', backgroundColor: '#3498db', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-                Lógica e Engrenagens
+    <section className="quiz-page">
+      <div className="quiz-card">
+        <div className="quiz-card__header">Quiz Perfil Tech</div>
+
+        <div className="quiz-card__body">
+          {!resultado ? (
+            <form className="quiz-form" onSubmit={handleSubmit}>
+              <h1 className="quiz-card__title">Descubra a sua oficina</h1>
+
+              <div className="quiz-progress">
+                <progress
+                  className="quiz-progress__bar"
+                  value={totalRespondidas}
+                  max={perguntas.length}
+                ></progress>
+                <span className="quiz-progress__text">
+                  {totalRespondidas} de {perguntas.length} respondidas
+                </span>
+              </div>
+
+              {perguntas.map((pergunta, index) => (
+                <fieldset key={pergunta.id} className="quiz-question">
+                  <legend className="quiz-question__legend">
+                    <span className="quiz-question__number">{index + 1}</span>
+                    {pergunta.enunciado}
+                  </legend>
+
+                  <div className="quiz-question__options">
+                    {pergunta.opcoes.map((opcao) => (
+                      <label key={opcao.texto} className="quiz-option">
+                        <input
+                          className="quiz-option__input"
+                          type="radio"
+                          name={pergunta.id}
+                          checked={respostas[pergunta.id] === opcao.valor}
+                          onChange={() => selecionarOpcao(pergunta.id, opcao.valor)}
+                        />
+                        <span className="quiz-option__label">{opcao.texto}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ))}
+
+              <button
+                type="submit"
+                className="btn-pill btn-pill--blue quiz-form__submit"
+                disabled={!todasRespondidas}
+              >
+                Ver resultado
               </button>
-              <button onClick={() => responder(0)} style={{ padding: '10px 20px', backgroundColor: '#e74c3c', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
-                Criatividade e Visual
+            </form>
+          ) : (
+            <div className="quiz-result">
+              <h2 className="quiz-result__title">Resultado do Quiz</h2>
+              <p className="quiz-result__text">{resultado}</p>
+              <button type="button" className="btn-pill btn-pill--orange" onClick={reiniciar}>
+                Refazer o quiz
               </button>
             </div>
-          </>
-        ) : (
-          <div style={{ marginTop: '20px', padding: '20px', backgroundColor: '#dff9fb', borderRadius: '8px', color: '#130f40' }}>
-            <h3>Resultado do Algoritmo:</h3>
-            <p style={{ fontWeight: 'bold', fontSize: '18px' }}>{resultado}</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
