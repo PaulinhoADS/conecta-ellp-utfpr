@@ -104,7 +104,28 @@ const Home = () => {
           </ul>
         </div>
       </section>
-
+      
+      <section id="sobre" className="home-sobre">
+        <div className="my-container">
+          <h2 className="title title--dark">Sobre o Programa ELLP</h2>
+          <div className="home-sobre__content">
+            <p>
+              O <strong>Conecta ELLP</strong> atende diretamente às necessidades do programa <strong>Ensino Lúdico de Lógica e Programação (ELLP)</strong> da UTFPR Câmpus Cornélio Procópio.
+            </p>
+            <p>
+              Sob a coordenação do professor Antonio Carlos Fernandes da Silva, o projeto foca em educação e tecnologia para a comunidade local, utilizando o ensino tecnológico como ferramenta de reforço escolar em matemática e ciências.
+            </p>
+            <ul className="home-sobre__list">
+              <li><strong>Público-alvo:</strong> Crianças e adolescentes (10 a 16 anos) de escolas públicas, ONGs e creches.</li>
+              <li><strong>Execução:</strong> Aulas presenciais aos sábados, ministradas por estudantes voluntários da UTFPR.</li>
+            </ul>
+            <a href="https://grupoellp.com.br" target="_blank" rel="noopener noreferrer" className="btn-pill btn-pill--orange">
+              Acessar site oficial do ELLP
+            </a>
+          </div>
+        </div>
+      </section>
+         
       <section id="quiz" className="home-quiz">
         <div className="my-container">
           <div className="quiz-panel">

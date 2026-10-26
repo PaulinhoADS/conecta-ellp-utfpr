@@ -45,6 +45,11 @@ const Header = () => {
               </NavLink>
             </li>
             <li className="site-header__item">
+              <a href="/#sobre" className="site-header__link" onClick={closeMenu}>
+                O Projeto ELLP
+              </a>
+            </li>
+            <li className="site-header__item">
               <NavLink to="/quiz" className={getLinkClass} onClick={closeMenu}>
                 Quiz Perfil Tech
               </NavLink>

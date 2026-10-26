@@ -271,6 +271,32 @@
     border-radius: 50%;
 }
 
+.home-sobre {
+    padding: 70px 0 90px;
+    background-color: var(--branco);
+    color: var(--preto);
+}
+
+.title--dark {
+    color: var(--azul-escuro);
+}
+
+.home-sobre__content {
+    max-width: 760px;
+    margin: 40px auto 0;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.home-sobre__list {
+    margin: 24px 0 36px;
+    padding-left: 20px;
+}
+
+.home-sobre__list li {
+    margin-bottom: 12px;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .home-hero__bubble {
         animation: none;
