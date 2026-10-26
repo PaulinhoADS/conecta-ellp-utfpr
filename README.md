@@ -59,6 +59,22 @@ Para visualizar o escopo detalhado de funcionalidades e restrições técnicas d
 
 [Clique aqui para visualizar o Protótipo da Tela do Quiz](docs/prototipo-tela-quiz.png)
 
+
+### Telas do Sistema (Versão Atual)
+O sistema já conta com as interfaces responsivas e estilizadas implementadas em React. Clique nos links abaixo para visualizar:
+
+[Visualizar a Tela Inicial (Home)](docs/tela-home.png)
+
+
+[Visualizar a continuação da Tela Inicial (Home)](docs/tela-home2.png)
+
+
+[Visualizar o Motor de Recomendação (Quiz)](docs/tela-quiz.png)
+
+
+[Visualizar a Tela de Acesso Restrito (Login)](docs/tela-login.png)
+
+
 ### Arquitetura
 A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, garantindo o total desacoplamento das regras de negócio, acesso a dados e roteamento da API. A comunicação entre Front-end e Back-end ocorrerá via JSON em rotas seguras.
 
