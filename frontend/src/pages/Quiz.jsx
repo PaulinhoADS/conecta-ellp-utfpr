@@ -4,39 +4,35 @@ import './Quiz.css';
 
 const perguntas = [
   {
-    id: 'quebra-cabecas',
-    enunciado: 'Você prefere resolver quebra-cabeças matemáticos ou desenhar personagens?',
+    id: 'idade',
+    enunciado: 'Qual é a sua idade?',
     opcoes: [
-      { texto: 'Resolver quebra-cabeças matemáticos', valor: 1 },
-      { texto: 'Desenhar personagens', valor: 0 },
+      { texto: '9 anos ou menos', valor: 9 },
+      { texto: '10 ou 11 anos', valor: 10 },
+      { texto: '12 anos', valor: 12 },
+      { texto: '13 anos ou mais', valor: 13 },
     ],
   },
   {
-    id: 'brinquedo-quebrado',
-    enunciado:
-      'Quando um brinquedo quebra, você tenta entender as engrenagens ou foca em deixá-lo bonito de novo?',
+    id: 'interesse',
+    enunciado: 'O que mais chama a sua atenção quando você pensa em tecnologia?',
     opcoes: [
-      { texto: 'Tento entender as engrenagens', valor: 1 },
-      { texto: 'Foco em deixá-lo bonito de novo', valor: 0 },
+      { texto: 'Montar peças, robôs e mexer com fios/luzes', valor: 'hardware' },
+      { texto: 'Criar mundos, personagens e jogar', valor: 'jogos' },
+      { texto: 'Criar sites, aplicativos e entender como a internet funciona', valor: 'software' },
+      { texto: 'Desenhar objetos e planejar projetos visuais', valor: 'design' },
     ],
   },
   {
-    id: 'regras-ou-liberdade',
-    enunciado:
-      'Você gosta de seguir regras estritas para chegar a um resultado ou prefere ter liberdade criativa?',
+    id: 'estilo',
+    enunciado: 'Como você prefere aprender e resolver problemas?',
     opcoes: [
-      { texto: 'Seguir regras estritas para chegar a um resultado', valor: 1 },
-      { texto: 'Ter liberdade criativa', valor: 0 },
+      { texto: 'Seguindo a lógica, regras estritas e digitando códigos', valor: 'logica' },
+      { texto: 'De forma visual, arrastando blocos e desenhando', valor: 'visual' },
+      { texto: 'Construindo coisas com as próprias mãos', valor: 'pratico' },
     ],
   },
 ];
-
-const PONTOS_MINIMOS_LOGICA = 2;
-
-const resultados = {
-  logica: 'Oficina Recomendada: Lógica de Programação e Algoritmos (Python)',
-  visual: 'Oficina Recomendada: Criação de Jogos e Web (Scratch / HTML)',
-};
 
 const Quiz = () => {
   const [respostas, setRespostas] = useState({});
@@ -51,14 +47,36 @@ const Quiz = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!todasRespondidas) return;
 
-    if (!todasRespondidas) {
-      return;
+    const { idade, interesse, estilo } = respostas;
+    let oficinaRecomendada = '';
+
+    // LÓGICA DE RECOMENDAÇÃO BASEADA EM IDADE E PERFIL (ÁRVORE DE DECISÃO)
+    if (interesse === 'hardware' || estilo === 'pratico') {
+      if (idade >= 10) {
+        oficinaRecomendada = 'Robótica com Arduino (Idade: 10+)';
+      } else {
+        oficinaRecomendada = 'Robótica LEGO (Livre)';
+      }
+    } else if (interesse === 'software') {
+      if (idade >= 13) {
+        oficinaRecomendada = 'Fábrica de Sites (Idade: 13+)';
+      } else {
+        oficinaRecomendada = 'Informática Básica / App Inventor (Livre)';
+      }
+    } else if (interesse === 'design' || (interesse === 'jogos' && estilo === 'visual')) {
+      if (idade >= 12) {
+        oficinaRecomendada = 'Modelagem 3D (Idade: 12+)';
+      } else {
+        oficinaRecomendada = 'Desenvolvimento de Jogos (Livre)';
+      }
+    } else {
+      // Fallback genérico para quem curte lógica e games
+      oficinaRecomendada = 'Desenvolvimento de Jogos (Livre)';
     }
 
-    const pontosLogica = Object.values(respostas).reduce((soma, valor) => soma + valor, 0);
-
-    setResultado(pontosLogica >= PONTOS_MINIMOS_LOGICA ? resultados.logica : resultados.visual);
+    setResultado(`Oficina Recomendada: ${oficinaRecomendada}`);
   };
 
   const reiniciar = () => {

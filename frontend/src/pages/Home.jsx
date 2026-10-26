@@ -4,29 +4,40 @@ import './Home.css';
 
 const oficinas = [
   {
-    id: 'programacao-visual',
+    id: 'robotica-lego',
     numero: '01',
-    titulo: 'Programação Visual',
-    descricao:
-      'Monte soluções arrastando blocos e elementos visuais e veja o resultado ganhar vida na tela, sem precisar decorar comandos.',
-    publico: 'Para quem gosta de criar, desenhar e ver resultado rápido.',
+    titulo: 'Robótica LEGO',
+    descricao: 'Utiliza kits LEGO Mindstorms para ensinar conceitos de física, engenharia e programação de forma lúdica.',
+    publico: 'Para todas as idades. Construa e programe robôs interativos.',
   },
   {
-    id: 'logica-programacao',
+    id: 'robotica-arduino',
     numero: '02',
-    titulo: 'Lógica de Programação',
-    descricao:
-      'Exercite raciocínio, algoritmos e resolução de problemas. É a base que sustenta qualquer linguagem que você aprender depois.',
-    publico: 'Para quem curte desafios, enigmas e quebra-cabeças.',
+    titulo: 'Robótica com Arduino',
+    descricao: 'Foco em eletrônica básica e automação. Programe placas digitais conectando sensores, luzes e motores.',
+    publico: 'A partir de 10 anos. Para quem gosta de criar circuitos e automações.',
   },
   {
-    id: 'desenvolvimento-web',
+    id: 'modelagem-3d',
     numero: '03',
-    titulo: 'Desenvolvimento Web',
-    descricao:
-      'Dê os primeiros passos construindo páginas com HTML, CSS e JavaScript e publique algo que qualquer pessoa pode acessar.',
-    publico: 'Para quem quer construir sites e aplicativos.',
+    titulo: 'Modelagem 3D',
+    descricao: 'Desenvolve a percepção espacial através da criação de objetos digitais tridimensionais.',
+    publico: 'A partir de 12 anos. Simula a base para design e engenharia.',
   },
+  {
+    id: 'fabrica-sites',
+    numero: '04',
+    titulo: 'Fábrica de Sites',
+    descricao: 'Introdução ao desenvolvimento web. Estruture e crie suas próprias páginas e portfólios na internet.',
+    publico: 'A partir de 13 anos. Para quem quer dominar HTML, CSS e criar na web.',
+  },
+  {
+    id: 'desenvolvimento-jogos',
+    numero: '05',
+    titulo: 'Desenvolvimento de Jogos',
+    descricao: 'Criação de games, ensinando a lógica de programação por trás das mecânicas, personagens e cenários.',
+    publico: 'Para todas as idades. Ideal para mentes criativas e lógicas.',
+  }
 ];
 
 const passosQuiz = [

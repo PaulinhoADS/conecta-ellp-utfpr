@@ -20,6 +20,12 @@
 ### A Ideia
 O projeto consiste no desenvolvimento de um sistema web completo (Front-end e Back-end) destinado ao gerenciamento e à triagem de participantes do projeto de extensão ELLP (Ensino de Lógica e Linguagem de Programação). A plataforma permitirá o cadastro autônomo pelas escolas parceiras, a gestão de vagas pelos tutores, e contará com o recurso central **"Quiz Perfil Tech"** – um questionário dinâmico que avalia as aptidões lógicas dos alunos inscritos, recomendando de forma automatizada a oficina mais adequada.
 
+### Sobre o Programa ELLP (UTFPR)
+O projeto Conecta ELLP atende diretamente às necessidades do programa **Ensino Lúdico de Lógica e Programação (ELLP)** da UTFPR Câmpus Cornélio Procópio. Sob a coordenação do professor Antonio Carlos Fernandes, o ELLP foca em educação e tecnologia para a comunidade local, utilizando o ensino tecnológico como ferramenta de reforço escolar em matemática e ciências.
+* **Público-alvo:** Crianças e adolescentes (10 a 16 anos) de escolas públicas, ONGs e creches.
+* **Execução:** Aulas presenciais aos sábados, ministradas por estudantes voluntários da UTFPR.
+* **Saiba mais:** [Acesse o site oficial do Grupo ELLP](https://grupoellp.com.br)
+
 ### Motivação e Problema a Resolver
 O ELLP democratiza a tecnologia, mas o processo de expansão esbarra na burocracia do gerenciamento manual e na alocação genérica dos alunos, gerando desmotivação quando o aluno entra em uma oficina fora do seu perfil. Nossa proposta otimiza o trabalho administrativo dos voluntários/professores e garante uma experiência personalizada para o aluno, aumentando o engajamento através da triagem inteligente.
 
@@ -58,6 +64,12 @@ A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, 
 
 ---
 
+## Funcionalidades e Navegação
+* **Cadastro e Triagem (Fluxo Atual):** Alunos acessam a página inicial e realizam o "Quiz Perfil Tech". O algoritmo cruza dados de idade e aptidão para sugerir oficinas reais da grade do ELLP (Robótica, Modelagem 3D, Sites, Jogos, etc).
+* **Módulo Administrativo (Em Desenvolvimento):** A página de Login de professores e tutores possui interface pronta, mas a autenticação e o painel de turmas (com acesso ao Banco de Dados) serão integrados na Etapa Final de entrega.
+
+---
+
 ## Cronograma de Execução
 
 - **Setembro (Semanas 3 e 4):** Levantamento de requisitos, estruturação do repositório, modelagem do Banco de Dados (físico/lógico) e prototipação.
@@ -70,18 +82,23 @@ A arquitetura do back-end seguirá o padrão **Controller-Service-Repository**, 
 
 ## Como rodar este projeto na sua máquina
 
-### Pré-requisitos
-- Node.js instalado.
-- PostgreSQL rodando localmente.
+### Opção 1: Download Direto (Sem Git)
+Se preferir não utilizar o terminal, você pode baixar o código-fonte seguro:
+1. No topo desta página do GitHub, clique no botão verde **"<> Code"**.
+2. Selecione **"Download ZIP"**.
+3. Extraia o arquivo, abra a pasta no VS Code e siga os passos de instalação abaixo.
 
-### Passos para o Back-end
-1. Clone o repositório.
+### Opção 2: Via Git (Recomendado)
+**Pré-requisitos:** Node.js instalado e PostgreSQL rodando localmente.
+
+**Passos para o Back-end**
+1. Clone o repositório: `git clone https://github.com/SeuUsuario/conecta-ellp-utfpr.git`
 2. Abra o terminal na pasta `backend` e rode `npm install`.
 3. Crie um banco de dados no seu PostgreSQL chamado `ellp_db`.
 4. Copie o arquivo `.env.example`, renomeie para `.env` e preencha com a senha do seu banco local.
-5. Rode `npm run dev` (ou `node server.js`) para iniciar a API. As tabelas serão criadas automaticamente pelo Sequelize.
+5. Rode `npm run dev` (ou `node server.js`). As tabelas serão criadas automaticamente pelo Sequelize.
 
-### Passos para o Front-end
+**Passos para o Front-end**
 1. Abra um novo terminal na pasta `frontend`.
 2. Rode `npm install`.
-3. Rode `npm run dev` e acesse o link gerado no terminal.
+3. Rode `npm run dev` e acesse o link gerado no terminal (geralmente `http://localhost:5173`).
