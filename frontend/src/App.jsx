@@ -5,6 +5,7 @@ import AuthProvider from './contexts/AuthContext';
 import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Login from './pages/Login';
+import Unauthorized from './pages/Unauthorized';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -21,6 +22,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/unauthorized" element={<Unauthorized />}/>
             </Routes>
             <Footer />
           </main>      
