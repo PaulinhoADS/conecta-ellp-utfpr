@@ -1,6 +1,7 @@
 // src/App.jsx
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthProvider from './contexts/AuthContext';
 import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Login from './pages/Login';
@@ -12,16 +13,18 @@ import ScrollToTop from './components/ScrollToTop';
 function App() {
   return (
     <BrowserRouter>
-        <ScrollToTop />
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/quiz" element={<Quiz />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-          <Footer />
-        </main>
+      <AuthProvider>
+          <ScrollToTop />
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+            <Footer />
+          </main>      
+      </AuthProvider>
     </BrowserRouter>
   );
 }
