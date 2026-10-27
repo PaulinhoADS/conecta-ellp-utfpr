@@ -1,11 +1,13 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -33,6 +35,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     setToken(null);
     setUser(null);
+    navigate('/');
   };
 
   const contextValue = useMemo(
