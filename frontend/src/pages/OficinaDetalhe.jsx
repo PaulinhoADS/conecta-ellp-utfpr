@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getOficinaById } from '../services/oficinasService';
-import './OficinaDetalhe.css';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getOficinaById } from "../services/oficinasService";
+import "./OficinaDetalhe.css";
 
 const OficinaDetalhe = () => {
   const { id } = useParams();
   const [oficina, setOficina] = useState(null);
   const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState("");
 
   useEffect(() => {
     let ativo = true;
     setCarregando(true);
-    setErro('');
+    setErro("");
 
     getOficinaById(id)
       .then((dados) => {
@@ -22,13 +22,13 @@ const OficinaDetalhe = () => {
         if (dados) {
           setOficina(dados);
         } else {
-          setErro('Oficina não encontrada.');
+          setErro("Oficina não encontrada.");
         }
         setCarregando(false);
       })
       .catch(() => {
         if (ativo) {
-          setErro('Não foi possível carregar a oficina.');
+          setErro("Não foi possível carregar a oficina.");
           setCarregando(false);
         }
       });
@@ -76,8 +76,12 @@ const OficinaDetalhe = () => {
         <div className="panel__body">
           <div className="oficina-detail__top">
             <h1 className="oficina-detail__title">{oficina.nome}</h1>
-            <span className={oficina.ativa ? 'badge badge--ativa' : 'badge badge--inativa'}>
-              {oficina.ativa ? 'Ativa' : 'Inativa'}
+            <span
+              className={
+                oficina.ativa ? "badge badge--ativa" : "badge badge--inativa"
+              }
+            >
+              {oficina.ativa ? "Ativa" : "Inativa"}
             </span>
           </div>
           <p className="oficina-detail__theme">{oficina.tema}</p>
@@ -85,7 +89,9 @@ const OficinaDetalhe = () => {
           <dl className="oficina-detail__facts">
             <div className="oficina-detail__fact">
               <dt className="oficina-detail__fact-label">Código</dt>
-              <dd className="oficina-detail__fact-value">#{String(oficina.id).padStart(2, '0')}</dd>
+              <dd className="oficina-detail__fact-value">
+                #{String(oficina.id).padStart(2, "0")}
+              </dd>
             </div>
             <div className="oficina-detail__fact">
               <dt className="oficina-detail__fact-label">Vagas</dt>
@@ -97,7 +103,10 @@ const OficinaDetalhe = () => {
           <p className="oficina-detail__description">{oficina.descricao}</p>
 
           <div className="oficina-detail__actions">
-            <Link to={`/oficinas/${oficina.id}/editar`} className="btn-pill btn-pill--blue">
+            <Link
+              to={`/oficinas/${oficina.id}/editar`}
+              className="btn-pill btn-pill--blue"
+            >
               Editar oficina
             </Link>
             <Link to="/oficinas" className="btn-pill btn-pill--outline-dark">
