@@ -1,31 +1,39 @@
 // src/App.jsx
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthProvider from './contexts/AuthContext';
-import Home from './pages/Home';
-import Quiz from './pages/Quiz';
-import Login from './pages/Login';
-import Unauthorized from './pages/Unauthorized';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthProvider from "./contexts/AuthContext";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import Login from "./pages/Login";
+import Unauthorized from "./pages/Unauthorized";
+import OficinaForm from "./pages/OficinaForm";
+import OficinaDetalhe from "./pages/OficinaDetalhe";
+import OficinasList from "./pages/OficinasList";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Componente principal do aplicativo
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-          <ScrollToTop />
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/quiz" element={<Quiz />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/unauthorized" element={<Unauthorized />}/>
-            </Routes>
-            <Footer />
-          </main>      
+        <ScrollToTop />
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+
+            <Route path="/oficinas" element={<OficinasList />} />
+            <Route path="/oficinas/:id" element={<OficinaDetalhe />} />
+            <Route path="/oficinas/nova" element={<OficinaForm />} />
+            <Route path="/oficinas/:id/editar" element={<OficinaForm />} />
+          </Routes>
+          <Footer />
+        </main>
       </AuthProvider>
     </BrowserRouter>
   );
