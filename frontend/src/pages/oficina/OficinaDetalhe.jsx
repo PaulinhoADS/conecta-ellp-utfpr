@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getOficinaById } from "../services/oficinasService";
+import { getOficinaById } from "../../services/oficinasService";
 import "./OficinaDetalhe.css";
 
 const OficinaDetalhe = () => {

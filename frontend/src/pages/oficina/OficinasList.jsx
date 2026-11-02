@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getOficinas } from "../services/oficinasService";
+import { getOficinas } from "../../services/oficinasService";
 import "./OficinasList.css";
 
 const OficinasList = () => {

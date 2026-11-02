@@ -4,7 +4,7 @@ import {
   updateOficina,
   getOficinaById,
   createOficina,
-} from "../services/oficinasService";
+} from "../../services/oficinasService";
 import "./OficinaForm.css";
 
 const LIMITE_DESCRICAO = 500;
