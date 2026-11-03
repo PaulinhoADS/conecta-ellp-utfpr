@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Quiz from './pages/Quiz';
 import Login from './pages/Login';
 import Unauthorized from './pages/Unauthorized';
+import VoluntariosPage from './crud_voluntários/VoluntariosPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -15,17 +16,18 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-          <ScrollToTop />
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/quiz" element={<Quiz />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/unauthorized" element={<Unauthorized />}/>
-            </Routes>
-            <Footer />
-          </main>      
+        <ScrollToTop />
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/voluntarios/*" element={<VoluntariosPage />} />
+          </Routes>
+        </main>
+        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
