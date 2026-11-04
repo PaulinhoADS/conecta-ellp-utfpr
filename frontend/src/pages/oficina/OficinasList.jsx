@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getOficinas } from "../../services/oficinasService";
+import { useAuth } from "../../contexts/AuthContext";
 import "./OficinasList.css";
 
 const OficinasList = () => {
@@ -8,6 +9,8 @@ const OficinasList = () => {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [exibirInativas, setExibirInativas] = useState(false);
+  const { hasRole } = useAuth();
+  const permissao = hasRole(["admin", "superadmin"]);
 
   useEffect(() => {
     let ativo = true;
@@ -46,9 +49,11 @@ const OficinasList = () => {
               Conheça as oficinas do projeto ELLP.
             </p>
           </div>
-          <Link to="/oficinas/nova" className="btn-pill btn-pill--orange">
-            Nova oficina
-          </Link>
+          {permissao && (
+            <Link to="/oficinas/nova" className="btn-pill btn-pill--orange">
+              Nova oficina
+            </Link>
+          )}
         </div>
 
         {carregando && (
@@ -65,24 +70,26 @@ const OficinasList = () => {
 
         {!carregando && !erro && (
           <>
-            <div className="oficinas-toolbar">
-              <label className="oficinas-filter">
-                <input
-                  className="oficinas-filter__input"
-                  type="checkbox"
-                  checked={exibirInativas}
-                  onChange={(e) => setExibirInativas(e.target.checked)}
-                />
-                <span>
-                  Exibir oficinas inativas
-                  {totalInativas > 0 ? ` (${totalInativas})` : ""}
+            {permissao && (
+              <div className="oficinas-toolbar">
+                <label className="oficinas-filter">
+                  <input
+                    className="oficinas-filter__input"
+                    type="checkbox"
+                    checked={exibirInativas}
+                    onChange={(e) => setExibirInativas(e.target.checked)}
+                  />
+                  <span>
+                    Exibir oficinas inativas
+                    {totalInativas > 0 ? ` (${totalInativas})` : ""}
+                  </span>
+                </label>
+                <span className="oficinas-toolbar__count">
+                  {oficinasVisiveis.length}{" "}
+                  {oficinasVisiveis.length === 1 ? "oficina" : "oficinas"}
                 </span>
-              </label>
-              <span className="oficinas-toolbar__count">
-                {oficinasVisiveis.length}{" "}
-                {oficinasVisiveis.length === 1 ? "oficina" : "oficinas"}
-              </span>
-            </div>
+              </div>
+            )}
 
             {oficinasVisiveis.length === 0 ? (
               <div className="oficinas-empty">
@@ -135,12 +142,14 @@ const OficinasList = () => {
                       >
                         Ver detalhes
                       </Link>
-                      <Link
-                        to={`/oficinas/${oficina.id}/editar`}
-                        className="btn-pill btn-pill--outline-dark btn-pill--small"
-                      >
-                        Editar
-                      </Link>
+                      {permissao && (
+                        <Link
+                          to={`/oficinas/${oficina.id}/editar`}
+                          className="btn-pill btn-pill--outline-dark btn-pill--small"
+                        >
+                          Editar
+                        </Link>
+                      )}
                     </div>
                   </li>
                 ))}

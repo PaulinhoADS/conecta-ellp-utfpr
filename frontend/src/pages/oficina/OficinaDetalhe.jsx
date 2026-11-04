@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getOficinaById } from "../../services/oficinasService";
 import "./OficinaDetalhe.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 const OficinaDetalhe = () => {
   const { id } = useParams();
   const [oficina, setOficina] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const { hasRole } = useAuth();
+  const permissao = hasRole("admin", "superadmin");
 
   useEffect(() => {
     let ativo = true;
@@ -103,12 +106,14 @@ const OficinaDetalhe = () => {
           <p className="oficina-detail__description">{oficina.descricao}</p>
 
           <div className="oficina-detail__actions">
-            <Link
-              to={`/oficinas/${oficina.id}/editar`}
-              className="btn-pill btn-pill--blue"
-            >
-              Editar oficina
-            </Link>
+            {permissao && (
+              <Link
+                to={`/oficinas/${oficina.id}/editar`}
+                className="btn-pill btn-pill--blue"
+              >
+                Editar oficina
+              </Link>
+            )}
             <Link to="/oficinas" className="btn-pill btn-pill--outline-dark">
               Voltar para a lista
             </Link>
