@@ -9,6 +9,7 @@ import Unauthorized from "./pages/Unauthorized";
 import OficinaForm from "./pages/oficina/OficinaForm";
 import OficinaDetalhe from "./pages/oficina/OficinaDetalhe";
 import OficinasList from "./pages/oficina/OficinasList";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -26,11 +27,17 @@ function App() {
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
-
             <Route path="/oficinas" element={<OficinasList />} />
             <Route path="/oficinas/:id" element={<OficinaDetalhe />} />
-            <Route path="/oficinas/nova" element={<OficinaForm />} />
-            <Route path="/oficinas/:id/editar" element={<OficinaForm />} />
+
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={["admin", "superadmin"]} />
+              }
+            >
+              <Route path="/oficinas/nova" element={<OficinaForm />} />
+              <Route path="/oficinas/:id/editar" element={<OficinaForm />} />
+            </Route>
           </Routes>
           <Footer />
         </main>
