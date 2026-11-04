@@ -50,6 +50,11 @@ const Header = () => {
               </a>
             </li>
             <li className="site-header__item">
+              <NavLink to="/escolas" className={getLinkClass} onClick={closeMenu}>
+                Escolas
+              </NavLink>
+            </li>
+            <li className="site-header__item">
               <NavLink to="/quiz" className={getLinkClass} onClick={closeMenu}>
                 Quiz Perfil Tech
               </NavLink>

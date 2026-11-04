@@ -4,7 +4,24 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
+const CHAVE_SEED_SUPERUSER = "conecta-ellp:superuser-seeded";
+
+const garantirSuperuserNoLocalStorage = () => {
+  if (!localStorage.getItem(CHAVE_SEED_SUPERUSER)) {
+    const superuserPadrao = {
+      id: 1,
+      nome: "Administrador ELLP",
+      usuario: "admin",
+      role: "superadmin",
+    };
+    localStorage.setItem("token", "dev-token-superuser-ellp");
+    localStorage.setItem("user", JSON.stringify(superuserPadrao));
+    localStorage.setItem(CHAVE_SEED_SUPERUSER, "true");
+  }
+};
+
 const AuthProvider = ({ children }) => {
+  garantirSuperuserNoLocalStorage();
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const navigate = useNavigate();
@@ -35,7 +52,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     setToken(null);
     setUser(null);
-    navigate('/');
+    navigate("/");
   };
 
   const contextValue = useMemo(
@@ -47,7 +64,10 @@ const AuthProvider = ({ children }) => {
       logout: handleLogout,
       hasRole: (allowedRoles) => {
         if (!user || !user.role) return false;
-        return allowedRoles.includes(user.role);
+        const listaRoles = Array.isArray(allowedRoles)
+          ? allowedRoles
+          : [allowedRoles];
+        return listaRoles.includes(user.role);
       },
     }),
     [token, user],
