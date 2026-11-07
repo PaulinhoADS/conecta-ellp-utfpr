@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getResumoAdmin } from "../../services/adminService";
-import { formatarData } from "../../utils/formatarData";
 import "./AdminDashboard.css";
 
 const indicadores = [
@@ -129,7 +128,9 @@ const AdminDashboard = () => {
                             className="admin-pending__date"
                             dateTime={escola.createdAt}
                           >
-                            {formatarData(escola.createdAt)}
+                            {new Date(escola.createdAt).toLocaleDateString(
+                              "pt-BR",
+                            )}
                           </time>
                         </li>
                       ))}
