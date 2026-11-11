@@ -11,6 +11,16 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthProvider from './contexts/AuthContext';
+import Home from './pages/Home';
+import Quiz from './pages/Quiz';
+import Login from './pages/Login';
+import Unauthorized from './pages/Unauthorized';
+import VoluntariosPage from './crud_voluntários/VoluntariosPage';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Componente principal do aplicativo
 function App() {
@@ -33,9 +43,10 @@ function App() {
             >
               <Route path="/admin" element={<AdminDashboard />} />
             </Route>
+            <Route path="/voluntarios/*" element={<VoluntariosPage />} />
           </Routes>
-          <Footer />
         </main>
+        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
