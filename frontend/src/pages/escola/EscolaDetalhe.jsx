@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   aprovarEscola,
-  createAlunoEscola,
-  deleteAlunoEscola,
   deleteEscola,
   getEscolaById,
   registrarCartaConvite,
-  updateAlunoEscola,
 } from "../../services/escolasService";
+import {
+  createAluno,
+  deleteAluno,
+  updateAluno,
+} from "../../services/alunosService";
 import { useAuth } from "../../contexts/AuthContext";
 import "./EscolaDetalhe.css";
 
@@ -173,10 +175,10 @@ const EscolaDetalhe = () => {
 
     try {
       if (alunoEditandoId) {
-        await updateAlunoEscola(escola.id, alunoEditandoId, formAluno);
+        await updateAluno(escola.id, alunoEditandoId, formAluno);
         exibirFeedback("Dados do aluno atualizados com sucesso!");
       } else {
-        await createAlunoEscola(escola.id, formAluno);
+        await createAluno(escola.id, formAluno);
         exibirFeedback("Aluno cadastrado e vinculado à escola com sucesso!");
       }
       const atualizada = await getEscolaById(escola.id);
@@ -189,7 +191,7 @@ const EscolaDetalhe = () => {
 
   const handleRemoverAluno = async (alunoId) => {
     try {
-      await deleteAlunoEscola(escola.id, alunoId);
+      await deleteAluno(escola.id, alunoId);
       const atualizada = await getEscolaById(escola.id);
       setEscola(atualizada);
       exibirFeedback("Aluno removido da lista da escola.");
