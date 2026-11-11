@@ -10,7 +10,7 @@ const OficinaDetalhe = () => {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const { hasRole } = useAuth();
-  const permissao = hasRole("admin", "superadmin");
+  const permissao = hasRole(["admin", "superadmin"]);
 
   useEffect(() => {
     let ativo = true;
