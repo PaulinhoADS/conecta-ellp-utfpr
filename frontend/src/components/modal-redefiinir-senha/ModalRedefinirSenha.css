@@ -1,0 +1,151 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: rgba(0, 41, 96, 0.65);
+}
+
+.modal {
+    width: 100%;
+    max-width: 460px;
+    margin: auto;
+    overflow: hidden;
+    color: var(--preto);
+    background-color: var(--branco);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 41, 96, 0.35);
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 12px 12px 30px;
+    background-color: var(--azul-faixa);
+}
+
+.modal__title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--azul-escuro);
+}
+
+.modal__close {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--azul-escuro);
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal__close:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.modal__close:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modal__body {
+    padding: 28px 30px 32px;
+}
+
+.modal__subtitle {
+    margin: 0 0 22px;
+    font-size: 14px;
+    color: var(--cinza);
+}
+
+.modal__form {
+    display: grid;
+    gap: 18px;
+}
+
+.modal__submit {
+    width: 100%;
+}
+
+.password-feedback-slot {
+    min-height: 20px;
+}
+
+.password-feedback {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.password-feedback--ok {
+    color: var(--azul-secundario);
+}
+
+.password-feedback--erro {
+    color: #B3261E;
+}
+
+.password-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.password-toggle__input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--azul-principal);
+}
+
+.modal__success {
+    text-align: center;
+}
+
+.modal__success:focus {
+    outline: none;
+}
+
+.modal__success-title {
+    margin: 0;
+    font-family: var(--fonte-titulo);
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--azul-escuro);
+}
+
+.modal__success-text {
+    margin: 10px 0 24px;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .modal-overlay {
+        padding: 12px;
+    }
+
+    .modal__header {
+        padding-left: 20px;
+    }
+
+    .modal__body {
+        padding: 24px 20px 28px;
+    }
+}
