@@ -1,5 +1,16 @@
 // src/App.jsx
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AuthProvider from "./contexts/AuthContext";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import Login from "./pages/Login";
+import Unauthorized from "./pages/Unauthorized";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthProvider from './contexts/AuthContext';
 import Home from './pages/Home';
@@ -24,6 +35,14 @@ function App() {
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={["admin", "superadmin"]} />
+              }
+            >
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Route>
             <Route path="/voluntarios/*" element={<VoluntariosPage />} />
           </Routes>
         </main>
