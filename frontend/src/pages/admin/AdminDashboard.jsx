@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getResumoAdmin } from "../../services/adminService";
+import { getResumoAdmin } from "../../services/dashboardService";
 import "./AdminDashboard.css";
 
 const indicadores = [
