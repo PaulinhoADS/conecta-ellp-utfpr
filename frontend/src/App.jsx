@@ -13,6 +13,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import VoluntariosPage from "./crud_voluntários/VoluntariosPage";
 
 // Componente principal do aplicativo
 function App() {
@@ -37,10 +39,12 @@ function App() {
             >
               <Route path="/oficinas/nova" element={<OficinaForm />} />
               <Route path="/oficinas/:id/editar" element={<OficinaForm />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
+            <Route path="/voluntarios/*" element={<VoluntariosPage />} />
           </Routes>
-          <Footer />
         </main>
+        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
