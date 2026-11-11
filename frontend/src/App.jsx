@@ -6,21 +6,15 @@ import Home from "./pages/Home";
 import Quiz from "./pages/Quiz";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import OficinaForm from "./pages/oficina/OficinaForm";
+import OficinaDetalhe from "./pages/oficina/OficinaDetalhe";
+import OficinasList from "./pages/oficina/OficinasList";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthProvider from './contexts/AuthContext';
-import Home from './pages/Home';
-import Quiz from './pages/Quiz';
-import Login from './pages/Login';
-import Unauthorized from './pages/Unauthorized';
-import VoluntariosPage from './crud_voluntários/VoluntariosPage';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import VoluntariosPage from "./crud_voluntários/VoluntariosPage";
 
 // Componente principal do aplicativo
 function App() {
@@ -35,12 +29,16 @@ function App() {
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/login" element={<Login />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/oficinas" element={<OficinasList />} />
+            <Route path="/oficinas/:id" element={<OficinaDetalhe />} />
 
             <Route
               element={
                 <ProtectedRoute allowedRoles={["admin", "superadmin"]} />
               }
             >
+              <Route path="/oficinas/nova" element={<OficinaForm />} />
+              <Route path="/oficinas/:id/editar" element={<OficinaForm />} />
               <Route path="/admin" element={<AdminDashboard />} />
             </Route>
             <Route path="/voluntarios/*" element={<VoluntariosPage />} />
