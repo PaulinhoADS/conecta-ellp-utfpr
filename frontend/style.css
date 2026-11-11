@@ -65,7 +65,9 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
     font-family: inherit;
 }
 
@@ -194,6 +196,10 @@ footer p:last-child {
     width: min(760px, 90%);
 }
 
+.panel--xl {
+    width: min(920px, 90%);
+}
+
 .panel__header {
     padding: 15px 30px;
     font-size: 14px;
@@ -247,9 +253,20 @@ footer p:last-child {
     background-color: var(--azul-claro);
 }
 
+.badge--pendente {
+    color: #7A4100;
+    background-color: #FFE2B8;
+}
+
 .badge--inativa {
     color: var(--preto);
     background-color: #E6E6E6;
+}
+
+.badge--tipo {
+    color: var(--azul-secundario);
+    background-color: #EAF5FD;
+    border: 1px solid var(--azul-claro);
 }
 
 .btn-pill--small {
@@ -266,6 +283,18 @@ footer p:last-child {
 
 .btn-pill--outline-dark:hover {
     background-color: var(--azul-principal);
+    color: var(--branco);
+}
+
+.btn-pill--danger {
+    background-color: transparent;
+    color: #B3261E;
+    border-color: #B3261E;
+    box-shadow: none;
+}
+
+.btn-pill--danger:hover {
+    background-color: #B3261E;
     color: var(--branco);
 }
 
@@ -314,7 +343,7 @@ footer p:last-child {
 }
 
 .form-field__input--textarea {
-    min-height: 140px;
+    min-height: 120px;
     line-height: 1.5;
     resize: vertical;
 }
