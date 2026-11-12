@@ -9,11 +9,6 @@ const UserMenu = () => {
   const { isAuthenticated, user, logout, hasRole } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-  const route = hasRole(["superadmin", "admin"])
-    ? `/administradores/${user.id}`
-    : hasRole(["escola"])
-      ? `/escolas/${user.id}`
-      : `/alunos/${user.id}`;
 
   useEffect(() => {
     if (!open) return;
@@ -40,6 +35,12 @@ const UserMenu = () => {
       </Link>
     );
   }
+
+  const route = hasRole(["superadmin", "admin"])
+    ? `/administradores/${user.id}`
+    : hasRole(["escola"])
+      ? `/escolas/${user.id}`
+      : `/alunos/${user.id}`;
 
   return (
     <div className="user-menu" ref={ref}>
