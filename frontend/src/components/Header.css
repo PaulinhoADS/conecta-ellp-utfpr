@@ -77,6 +77,12 @@
     display: none;
 }
 
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 @media (max-width: 768px) {
     .site-header__brand {
         font-size: 22px;
