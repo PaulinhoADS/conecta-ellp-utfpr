@@ -40,7 +40,7 @@ const UserMenu = () => {
     ? `/administradores/${user.id}`
     : hasRole(["escola"])
       ? `/escolas/${user.id}`
-      : `/alunos/${user.id}`;
+      : `/escolas/${user.escolaId}/alunos/${user.id}`;
 
   return (
     <div className="user-menu" ref={ref}>
