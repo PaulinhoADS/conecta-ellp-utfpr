@@ -4,9 +4,14 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 import UserMenu from "./user-menu/UserMenu";
+import { useAuth } from "../contexts/AuthContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { hasRole } = useAuth();
+  const permissaoAdmin = hasRole(["superadmin", "admin"]);
+  const permissaoEscola = hasRole(["escola"]);
+  const permissaoAluno = hasRole(["aluno"]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -61,33 +66,68 @@ const Header = () => {
                   Início
                 </NavLink>
               </li>
+              {!permissaoAdmin && (
+                <li className="site-header__item">
+                  <a
+                    href="/#sobre"
+                    className="site-header__link"
+                    onClick={closeMenu}
+                  >
+                    O Projeto ELLP
+                  </a>
+                </li>
+              )}
               <li className="site-header__item">
-                <a
-                  href="/#sobre"
+                <NavLink
+                  to="/oficinas"
                   className="site-header__link"
                   onClick={closeMenu}
                 >
-                  O Projeto ELLP
-                </a>
-              </li>
-              <li className="site-header__item">
-                <NavLink
-                  to="/escolas"
-                  className={getLinkClass}
-                  onClick={closeMenu}
-                >
-                  Escolas
+                  Oficinas
                 </NavLink>
               </li>
-              <li className="site-header__item">
-                <NavLink
-                  to="/quiz"
-                  className={getLinkClass}
-                  onClick={closeMenu}
-                >
-                  Quiz Perfil Tech
-                </NavLink>
-              </li>
+              {permissaoAdmin && (
+                <>
+                  <li className="site-header__item">
+                    <NavLink
+                      to="/escolas"
+                      className={getLinkClass}
+                      onClick={closeMenu}
+                    >
+                      Escolas
+                    </NavLink>
+                  </li>
+                  <li className="site-header__item">
+                    <NavLink
+                      to="/admin"
+                      className={getLinkClass}
+                      onClick={closeMenu}
+                    >
+                      Dashboard
+                    </NavLink>
+                  </li>
+                  <li className="site-header__item">
+                    <NavLink
+                      to="/administradores"
+                      className={getLinkClass}
+                      onClick={closeMenu}
+                    >
+                      Administradores
+                    </NavLink>
+                  </li>
+                </>
+              )}
+              {permissaoAluno && (
+                <li className="site-header__item">
+                  <NavLink
+                    to="/quiz"
+                    className={getLinkClass}
+                    onClick={closeMenu}
+                  >
+                    Quiz Perfil Tech
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </nav>
 
