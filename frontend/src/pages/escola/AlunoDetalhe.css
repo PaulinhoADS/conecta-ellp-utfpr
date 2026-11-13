@@ -1,0 +1,124 @@
+.aluno-detail__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.aluno-detail__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.aluno-detail__code {
+    font-family: var(--fonte-titulo);
+    font-size: 20px;
+    color: var(--azul-secundario);
+}
+
+.aluno-detail__title {
+    margin: 0;
+    font-family: var(--fonte-titulo);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 1.15;
+    color: var(--azul-escuro);
+}
+
+.aluno-detail__username {
+    margin: 6px 0 0;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--azul-secundario);
+}
+
+.aluno-detail__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin: 0 0 24px;
+}
+
+.aluno-detail__fact {
+    padding: 16px 18px;
+    background-color: #EAF5FD;
+    border-left: 6px solid var(--laranja);
+    border-radius: 10px;
+}
+
+.aluno-detail__fact-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--cinza);
+}
+
+.aluno-detail__fact-value {
+    margin: 4px 0 0;
+    font-family: var(--fonte-titulo);
+    font-size: 26px;
+    color: var(--azul-escuro);
+}
+
+.aluno-detail__fact-value--sm {
+    font-family: var(--fonte-texto);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.aluno-detail__school-box {
+    margin-bottom: 28px;
+    padding: 18px 20px;
+    background-color: #F8FBFF;
+    border: 1px solid var(--azul-claro);
+    border-radius: 12px;
+}
+
+.aluno-detail__section-title {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--cinza);
+}
+
+.aluno-detail__school-name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--azul-escuro);
+}
+
+.aluno-detail__school-meta {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--preto);
+}
+
+.aluno-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.aluno-detail__actions--center {
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .aluno-detail__title {
+        font-size: 28px;
+    }
+
+    .aluno-detail__actions .btn-pill {
+        width: 100%;
+    }
+}

@@ -12,6 +12,8 @@ import {
   updateAluno,
 } from "../../services/alunosService";
 import { useAuth } from "../../contexts/AuthContext";
+import { generatePassword } from "../../utils/utils";
+import ModalRedefinirSenha from "../../components/modal-redefiinir-senha/ModalRedefinirSenha";
 import "./EscolaDetalhe.css";
 
 const OFICINAS_RECOMENDADAS = [
@@ -23,10 +25,27 @@ const OFICINAS_RECOMENDADAS = [
   "Desenvolvimento de Jogos",
 ];
 
-const alunoInicial = {
+const criarFormularioAlunoInicial = () => ({
   nome: "",
+  username: "",
   idade: "",
   perfilLologico: "Aguardando Quiz Perfil Tech",
+  senhaTemporaria: generatePassword(10),
+});
+
+const sugerirUsername = (nome = "") => {
+  const partes = String(nome)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (partes.length === 0) return "";
+  if (partes.length === 1) return partes[0];
+  return `${partes[0]}.${partes[partes.length - 1]}`;
 };
 
 const obterClasseBadgeStatus = (escola) => {
@@ -52,22 +71,28 @@ const obterTextoStatus = (escola) => {
 const EscolaDetalhe = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { hasRole } = useAuth();
-  const permissao = hasRole(["admin", "superadmin"]);
+  const { hasRole, user } = useAuth();
+  const permissaoAdmin = hasRole(["admin", "superadmin"]);
+  const permissaoEscola = hasRole(["admin", "superadmin", "escola"]);
 
   const [escola, setEscola] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
-  // Estado do formulário de Aluno (RF01)
+  // Estado do formulário de Aluno
   const [mostrarFormAluno, setMostrarFormAluno] = useState(false);
   const [alunoEditandoId, setAlunoEditandoId] = useState(null);
-  const [formAluno, setFormAluno] = useState(alunoInicial);
+  const [usernameEditadoManualmente, setUsernameEditadoManualmente] =
+    useState(false);
+  const [formAluno, setFormAluno] = useState(criarFormularioAlunoInicial);
   const [erroAluno, setErroAluno] = useState("");
+  const [credenciaisRecentes, setCredenciaisRecentes] = useState(null);
+  const [copiado, setCopiado] = useState(false);
 
-  // Estado do modal de Carta Convite (RF05) e confirmação de exclusão
+  // Estado dos modais
   const [modalCartaAberto, setModalCartaAberto] = useState(false);
+  const [modalSenhaAberto, setModalSenhaAberto] = useState(false);
   const [confirmandoExclusao, setConfirmandoExclusao] = useState(false);
 
   useEffect(() => {
@@ -134,20 +159,25 @@ const EscolaDetalhe = () => {
     }
   };
 
-  // Handlers de Alunos (RF01)
+  // Handlers de Alunos
   const handleAbrirNovoAluno = () => {
     setAlunoEditandoId(null);
-    setFormAluno(alunoInicial);
+    setUsernameEditadoManualmente(false);
+    setFormAluno(criarFormularioAlunoInicial());
     setErroAluno("");
+    setCredenciaisRecentes(null);
     setMostrarFormAluno(true);
   };
 
   const handleEditarAluno = (aluno) => {
     setAlunoEditandoId(aluno.id);
+    setUsernameEditadoManualmente(true);
     setFormAluno({
       nome: aluno.nome,
+      username: aluno.username || "",
       idade: String(aluno.idade),
       perfilLologico: aluno.perfilLologico || "Aguardando Quiz Perfil Tech",
+      senhaTemporaria: "",
     });
     setErroAluno("");
     setMostrarFormAluno(true);
@@ -156,8 +186,48 @@ const EscolaDetalhe = () => {
   const handleCancelarAluno = () => {
     setMostrarFormAluno(false);
     setAlunoEditandoId(null);
-    setFormAluno(alunoInicial);
+    setUsernameEditadoManualmente(false);
+    setFormAluno(criarFormularioAlunoInicial());
     setErroAluno("");
+  };
+
+  const handleNomeAlunoChange = (event) => {
+    const novoNome = event.target.value;
+    setFormAluno((atual) => ({
+      ...atual,
+      nome: novoNome,
+      username: usernameEditadoManualmente
+        ? atual.username
+        : sugerirUsername(novoNome),
+    }));
+  };
+
+  const handleUsernameAlunoChange = (event) => {
+    const valor = event.target.value.toLowerCase().replace(/\s+/g, "");
+    setUsernameEditadoManualmente(true);
+    setFormAluno((atual) => ({
+      ...atual,
+      username: valor,
+    }));
+  };
+
+  const handleRegerarSenhaTemporaria = () => {
+    setFormAluno((atual) => ({
+      ...atual,
+      senhaTemporaria: generatePassword(10),
+    }));
+  };
+
+  const handleCopiarCredenciais = async () => {
+    if (!credenciaisRecentes) return;
+    const texto = `Aluno: ${credenciaisRecentes.nome}\nUsuário: ${credenciaisRecentes.username}\nSenha temporária: ${credenciaisRecentes.senhaTemporaria}`;
+    try {
+      await navigator.clipboard.writeText(texto);
+      setCopiado(true);
+      window.setTimeout(() => setCopiado(false), 2500);
+    } catch {
+      setCopiado(false);
+    }
   };
 
   const handleSalvarAluno = async (event) => {
@@ -166,6 +236,10 @@ const EscolaDetalhe = () => {
 
     if (!formAluno.nome.trim()) {
       setErroAluno("Informe o nome completo do aluno.");
+      return;
+    }
+    if (!formAluno.username.trim()) {
+      setErroAluno("Defina um nome de usuário (username) para o aluno.");
       return;
     }
     if (!Number.isInteger(idadeNum) || idadeNum < 6 || idadeNum > 25) {
@@ -178,14 +252,24 @@ const EscolaDetalhe = () => {
         await updateAluno(escola.id, alunoEditandoId, formAluno);
         exibirFeedback("Dados do aluno atualizados com sucesso!");
       } else {
-        await createAluno(escola.id, formAluno);
-        exibirFeedback("Aluno cadastrado e vinculado à escola com sucesso!");
+        const novoAluno = await createAluno(escola.id, formAluno);
+        setCredenciaisRecentes({
+          id: novoAluno.id,
+          nome: novoAluno.nome,
+          username: novoAluno.username,
+          senhaTemporaria: novoAluno.senhaTemporaria,
+        });
+        exibirFeedback("Aluno cadastrado com sucesso! Repasse as credenciais temporárias abaixo ao estudante.");
       }
       const atualizada = await getEscolaById(escola.id);
       setEscola(atualizada);
       handleCancelarAluno();
-    } catch {
-      setErroAluno("Não foi possível salvar os dados do aluno.");
+    } catch (erroReq) {
+      if (erroReq?.response?.status === 409) {
+        setErroAluno("Este nome de usuário já está em uso. Escolha outro.");
+      } else {
+        setErroAluno("Não foi possível salvar os dados do aluno.");
+      }
     }
   };
 
@@ -232,6 +316,8 @@ const EscolaDetalhe = () => {
   }
 
   const totalAlunos = escola.alunos ? escola.alunos.length : 0;
+  const ehPropriaEscola =
+    hasRole("escola") && String(user?.id) === String(escola.id);
 
   return (
     <section className="page-gradient">
@@ -264,26 +350,37 @@ const EscolaDetalhe = () => {
                 <p className="escola-detail__cnpj">CNPJ: {escola.cnpj}</p>
               </div>
 
-              {permissao && (
-                <div className="escola-detail__quick-actions">
-                  {escola.status === "pendente" && escola.ativa && (
+              <div className="escola-detail__quick-actions">
+                {permissaoAdmin &&
+                  escola.status === "pendente" &&
+                  escola.ativa && (
                     <button
                       type="button"
                       className="btn-pill btn-pill--orange btn-pill--small"
                       onClick={handleAprovarEscola}
                     >
-                      ✓ Aprovar escola (RF05)
+                      ✓ Aprovar escola
                     </button>
                   )}
+                {permissaoAdmin && (
                   <button
                     type="button"
                     className="btn-pill btn-pill--blue btn-pill--small"
                     onClick={handleAbrirCartaConvite}
                   >
-                    ✉ Emitir carta-convite (RF05)
+                    ✉ Emitir carta-convite
                   </button>
-                </div>
-              )}
+                )}
+                {ehPropriaEscola && (
+                  <button
+                    type="button"
+                    className="btn-pill btn-pill--outline-dark btn-pill--small"
+                    onClick={() => setModalSenhaAberto(true)}
+                  >
+                    Redefinir senha
+                  </button>
+                )}
+              </div>
             </div>
 
             <dl className="escola-detail__facts">
@@ -344,7 +441,7 @@ const EscolaDetalhe = () => {
 
             <hr className="escola-detail__divider" />
 
-            {/* Seção RF01: Gestão de Alunos da Escola */}
+            {/* Seção de Gestão de Alunos da Escola */}
             <section
               className="escola-alunos"
               aria-labelledby="titulo-alunos-escola"
@@ -355,21 +452,15 @@ const EscolaDetalhe = () => {
                     id="titulo-alunos-escola"
                     className="escola-alunos__title"
                   >
-                    Alunos vinculados à instituição (RF01)
+                    Alunos vinculados à instituição
                   </h2>
                   <p className="escola-alunos__subtitle">
-                    Cadastre os alunos encaminhados pela escola e acompanhe a
-                    oficina recomendada pelo Quiz Perfil Tech.
+                    Cadastre os alunos encaminhados pela escola, gere suas
+                    credenciais de acesso e acompanhe a oficina recomendada.
                   </p>
                 </div>
                 <div className="escola-alunos__header-actions">
-                  <Link
-                    to="/quiz"
-                    className="btn-pill btn-pill--outline-dark btn-pill--small"
-                  >
-                    Ir para o Quiz
-                  </Link>
-                  {!mostrarFormAluno && (
+                  {permissaoEscola && !mostrarFormAluno && (
                     <button
                       type="button"
                       className="btn-pill btn-pill--orange btn-pill--small"
@@ -380,6 +471,63 @@ const EscolaDetalhe = () => {
                   )}
                 </div>
               </div>
+
+              {credenciaisRecentes && (
+                <div
+                  className="escola-credenciais-card"
+                  role="region"
+                  aria-label="Credenciais temporárias do aluno recém-cadastrado"
+                >
+                  <div className="escola-credenciais-card__header">
+                    <div>
+                      <strong>
+                        Credenciais de acesso geradas para{" "}
+                        {credenciaisRecentes.nome}
+                      </strong>
+                      <p>
+                        Anote ou copie os dados abaixo e repasse ao estudante.
+                        Ele poderá alterar a senha temporária no primeiro
+                        acesso.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      className="escola-credenciais-card__close"
+                      onClick={() => setCredenciaisRecentes(null)}
+                      aria-label="Fechar aviso de credenciais"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="escola-credenciais-card__grid">
+                    <div className="escola-credenciais-card__item">
+                      <span>Usuário (username)</span>
+                      <code>{credenciaisRecentes.username}</code>
+                    </div>
+                    <div className="escola-credenciais-card__item">
+                      <span>Senha temporária</span>
+                      <code>{credenciaisRecentes.senhaTemporaria}</code>
+                    </div>
+                  </div>
+
+                  <div className="escola-credenciais-card__actions">
+                    <button
+                      type="button"
+                      className="btn-pill btn-pill--blue btn-pill--small"
+                      onClick={handleCopiarCredenciais}
+                    >
+                      {copiado ? "✓ Credenciais copiadas!" : "Copiar credenciais"}
+                    </button>
+                    <Link
+                      to={`/escolas/${escola.id}/alunos/${credenciaisRecentes.id}`}
+                      className="btn-pill btn-pill--outline-dark btn-pill--small"
+                    >
+                      Ver perfil do aluno
+                    </Link>
+                  </div>
+                </div>
+              )}
 
               {mostrarFormAluno && (
                 <form
@@ -404,12 +552,24 @@ const EscolaDetalhe = () => {
                         className="form-field__input"
                         placeholder="Ex.: Lucas Gabriel Martins"
                         value={formAluno.nome}
-                        onChange={(e) =>
-                          setFormAluno((atual) => ({
-                            ...atual,
-                            nome: e.target.value,
-                          }))
-                        }
+                        onChange={handleNomeAlunoChange}
+                      />
+                    </div>
+
+                    <div className="form-field">
+                      <label
+                        className="form-field__label"
+                        htmlFor="aluno-username"
+                      >
+                        Nome de usuário (username)
+                      </label>
+                      <input
+                        id="aluno-username"
+                        type="text"
+                        className="form-field__input"
+                        placeholder="Ex.: lucas.martins"
+                        value={formAluno.username}
+                        onChange={handleUsernameAlunoChange}
                       />
                     </div>
 
@@ -464,6 +624,30 @@ const EscolaDetalhe = () => {
                     </div>
                   </div>
 
+                  {!alunoEditandoId && (
+                    <div className="escola-aluno-form__password-box">
+                      <div>
+                        <span className="escola-aluno-form__password-label">
+                          Senha temporária gerada automaticamente:
+                        </span>
+                        <code className="escola-aluno-form__password-code">
+                          {formAluno.senhaTemporaria}
+                        </code>
+                        <span className="form-field__hint">
+                          Esta senha será exibida após o cadastro para que a
+                          escola repasse ao estudante.
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-pill btn-pill--outline-dark btn-pill--small"
+                        onClick={handleRegerarSenhaTemporaria}
+                      >
+                        Gerar outra senha
+                      </button>
+                    </div>
+                  )}
+
                   {erroAluno && (
                     <p className="form-field__error" role="alert">
                       {erroAluno}
@@ -499,6 +683,7 @@ const EscolaDetalhe = () => {
                       <tr>
                         <th>Código</th>
                         <th>Nome do aluno</th>
+                        <th>Usuário</th>
                         <th>Idade</th>
                         <th>Oficina Recomendada (Quiz)</th>
                         <th>Ações</th>
@@ -511,6 +696,9 @@ const EscolaDetalhe = () => {
                             #{String(aluno.id).padStart(2, "0")}
                           </td>
                           <td className="escola-alunos__nome">{aluno.nome}</td>
+                          <td className="escola-alunos__username">
+                            @{aluno.username}
+                          </td>
                           <td>{aluno.idade} anos</td>
                           <td>
                             <span
@@ -525,20 +713,30 @@ const EscolaDetalhe = () => {
                             </span>
                           </td>
                           <td className="escola-alunos__row-actions">
-                            <button
-                              type="button"
+                            <Link
+                              to={`/escolas/${escola.id}/alunos/${aluno.id}`}
                               className="escola-link-btn"
-                              onClick={() => handleEditarAluno(aluno)}
                             >
-                              Editar
-                            </button>
-                            <button
-                              type="button"
-                              className="escola-link-btn escola-link-btn--danger"
-                              onClick={() => handleRemoverAluno(aluno.id)}
-                            >
-                              Remover
-                            </button>
+                              Ver detalhes
+                            </Link>
+                            {permissaoEscola && (
+                              <>
+                                <button
+                                  type="button"
+                                  className="escola-link-btn"
+                                  onClick={() => handleEditarAluno(aluno)}
+                                >
+                                  Editar
+                                </button>
+                                <button
+                                  type="button"
+                                  className="escola-link-btn escola-link-btn--danger"
+                                  onClick={() => handleRemoverAluno(aluno.id)}
+                                >
+                                  Remover
+                                </button>
+                              </>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -551,14 +749,16 @@ const EscolaDetalhe = () => {
             <hr className="escola-detail__divider" />
 
             <div className="escola-detail__actions">
-              {permissao && (
+              {permissaoEscola && (
+                <Link
+                  to={`/escolas/${escola.id}/editar`}
+                  className="btn-pill btn-pill--blue"
+                >
+                  Editar dados da escola
+                </Link>
+              )}
+              {permissaoAdmin && (
                 <>
-                  <Link
-                    to={`/escolas/${escola.id}/editar`}
-                    className="btn-pill btn-pill--blue"
-                  >
-                    Editar dados da escola
-                  </Link>
                   {!confirmandoExclusao ? (
                     <button
                       type="button"
@@ -588,15 +788,23 @@ const EscolaDetalhe = () => {
                   )}
                 </>
               )}
-              <Link to="/escolas" className="btn-pill btn-pill--outline-dark">
-                Voltar para a lista
-              </Link>
+              {permissaoAdmin && (
+                <Link to="/escolas" className="btn-pill btn-pill--outline-dark">
+                  Voltar para a lista
+                </Link>
+              )}
             </div>
           </div>
         </article>
       </div>
 
-      {/* Modal de Carta Convite (RF05) */}
+      {/* Modal de Redefinição de Senha */}
+      <ModalRedefinirSenha
+        aberto={modalSenhaAberto}
+        onFechar={() => setModalSenhaAberto(false)}
+      />
+
+      {/* Modal de Carta Convite */}
       {modalCartaAberto && (
         <div
           className="carta-modal-backdrop"
@@ -607,7 +815,7 @@ const EscolaDetalhe = () => {
           <div className="carta-modal">
             <div className="carta-modal__header">
               <h2 id="carta-convite-titulo">
-                Carta-Convite Oficial • Conecta ELLP (RF05)
+                Carta-Convite Oficial • Conecta ELLP
               </h2>
               <button
                 type="button"

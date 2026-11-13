@@ -146,7 +146,7 @@
     border-top: 1px solid var(--azul-claro);
 }
 
-/* Seção Alunos (RF01) */
+/* Seção Alunos */
 .escola-alunos__header {
     display: flex;
     flex-wrap: wrap;
@@ -176,6 +176,77 @@
     gap: 10px;
 }
 
+.escola-credenciais-card {
+    margin-bottom: 22px;
+    padding: 20px 22px;
+    background-color: #FFF8EE;
+    border: 2px solid var(--laranja);
+    border-radius: 12px;
+}
+
+.escola-credenciais-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.escola-credenciais-card__header strong {
+    font-size: 16px;
+    color: var(--azul-escuro);
+}
+
+.escola-credenciais-card__header p {
+    margin: 4px 0 0;
+    font-size: 13.5px;
+    color: var(--preto);
+}
+
+.escola-credenciais-card__close {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cinza);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.escola-credenciais-card__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.escola-credenciais-card__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background-color: var(--branco);
+    border: 1px solid #F0D2B2;
+    border-radius: 8px;
+}
+
+.escola-credenciais-card__item span {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--cinza);
+}
+
+.escola-credenciais-card__item code {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--azul-escuro);
+}
+
+.escola-credenciais-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .escola-aluno-form {
     display: grid;
     gap: 16px;
@@ -195,8 +266,42 @@
 
 .escola-aluno-form__grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.6fr;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 14px;
+}
+
+.escola-aluno-form__password-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    background-color: var(--branco);
+    border: 1px dashed var(--azul-principal);
+    border-radius: 10px;
+}
+
+.escola-aluno-form__password-box > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.escola-aluno-form__password-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--azul-escuro);
+}
+
+.escola-aluno-form__password-code {
+    padding: 4px 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--azul-escuro);
+    background-color: #EAF5FD;
+    border-radius: 6px;
 }
 
 .escola-aluno-form__actions {
@@ -252,8 +357,15 @@
     color: var(--azul-escuro);
 }
 
+.escola-alunos__username {
+    font-family: monospace;
+    font-size: 13.5px;
+    color: var(--cinza);
+}
+
 .escola-alunos__row-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -296,7 +408,7 @@
     border-radius: 10px;
 }
 
-/* Modal Carta Convite (RF05) */
+/* Modal Carta Convite */
 .carta-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -444,4 +556,3 @@
         border: 1px solid #000;
     }
 }
-

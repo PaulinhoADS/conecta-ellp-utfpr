@@ -1,0 +1,28 @@
+.aluno-form {
+    display: grid;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.aluno-form__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.aluno-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.aluno-form__actions--center {
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .aluno-form__actions .btn-pill {
+        width: 100%;
+    }
+}

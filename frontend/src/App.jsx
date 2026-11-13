@@ -9,6 +9,8 @@ import Unauthorized from "./pages/Unauthorized";
 import EscolasList from "./pages/escola/EscolasList";
 import EscolaDetalhe from "./pages/escola/EscolaDetalhe";
 import EscolaForm from "./pages/escola/EscolaForm";
+import AlunoDetalhe from "./pages/escola/AlunoDetalhe";
+import AlunoForm from "./pages/escola/AlunoForm";
 import OficinaForm from "./pages/oficina/OficinaForm";
 import OficinaDetalhe from "./pages/oficina/OficinaDetalhe";
 import OficinasList from "./pages/oficina/OficinasList";
@@ -57,10 +59,13 @@ function App() {
                 />
               }
             >
-              <Route path="/escolas/:escolaId/alunos/:id" element={null} />
+              <Route
+                path="/escolas/:escolaId/alunos/:id"
+                element={<AlunoDetalhe />}
+              />
               <Route
                 path="/escolas/:escolaId/alunos/:id/editar"
-                element={null}
+                element={<AlunoForm />}
               />
             </Route>
 

@@ -490,7 +490,7 @@ const EscolaForm = () => {
 
             <div className="form-field">
               <label className="form-field__label" htmlFor="status">
-                Status de credenciamento (RF05)
+                Status de credenciamento
               </label>
               <select
                 className="form-field__input"
