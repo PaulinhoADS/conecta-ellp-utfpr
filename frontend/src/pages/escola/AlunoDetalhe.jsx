@@ -5,6 +5,7 @@ import { getEscolaById } from "../../services/escolasService";
 import { useAuth } from "../../contexts/AuthContext";
 import ModalRedefinirSenha from "../../components/modal-redefiinir-senha/ModalRedefinirSenha";
 import "./AlunoDetalhe.css";
+import { generatePassword } from "../../utils/utils";
 
 const AlunoDetalhe = () => {
   const { escolaId, id } = useParams();
@@ -15,12 +16,13 @@ const AlunoDetalhe = () => {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [modalSenhaAberto, setModalSenhaAberto] = useState(false);
+  const [senhaGerada, setSenhaGerada] = useState("");
 
   const podeVoltarEscola = hasRole(["admin", "superadmin", "escola"]);
   const ehAlunoLogado = hasRole(["aluno"]);
   const podeRedefinirSenha =
     (ehAlunoLogado && String(user?.id) === String(id)) ||
-    hasRole(["admin", "superadmin"]);
+    hasRole(["admin", "superadmin", "escola"]);
 
   useEffect(() => {
     let ativo = true;
@@ -51,6 +53,14 @@ const AlunoDetalhe = () => {
       ativo = false;
     };
   }, [escolaId, id]);
+
+  const handleRedefinirSenha = () => {
+    if (ehAlunoLogado) {
+      setModalSenhaAberto(true);
+    } else {
+      setSenhaGerada(generatePassword());
+    }
+  };
 
   if (carregando) {
     return (
@@ -121,15 +131,21 @@ const AlunoDetalhe = () => {
               <p className="aluno-detail__username">@{aluno.username}</p>
             </div>
 
-            {podeRedefinirSenha && (
-              <button
-                type="button"
-                className="btn-pill btn-pill--outline-dark btn-pill--small"
-                onClick={() => setModalSenhaAberto(true)}
-              >
-                Redefinir senha
-              </button>
-            )}
+            <div className="aluno-detail__action-wrapper">
+              {podeRedefinirSenha && (
+                <button
+                  type="button"
+                  className="btn-pill btn-pill--outline-dark btn-pill--small"
+                  onClick={handleRedefinirSenha}
+                >
+                  Redefinir senha
+                </button>
+              )}
+
+              {senhaGerada && (
+                <div className="aluno-detail__senha-box">{senhaGerada}</div>
+              )}
+            </div>
           </div>
 
           <dl className="aluno-detail__facts">
