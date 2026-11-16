@@ -1,5 +1,8 @@
 // frontend/src/pages/Quiz.jsx
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { updateAluno } from '../services/alunosService';
 import './Quiz.css';
 
 const perguntas = [
@@ -37,6 +40,8 @@ const perguntas = [
 const Quiz = () => {
   const [respostas, setRespostas] = useState({});
   const [resultado, setResultado] = useState('');
+  const { user, hasRole } = useAuth();
+  const ehAlunoLogado = hasRole(['aluno']);
 
   const totalRespondidas = Object.keys(respostas).length;
   const todasRespondidas = totalRespondidas === perguntas.length;
@@ -45,35 +50,52 @@ const Quiz = () => {
     setRespostas((atual) => ({ ...atual, [idPergunta]: valor }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!todasRespondidas) return;
 
     const { idade, interesse, estilo } = respostas;
     let oficinaRecomendada = '';
+    let nomeOficinaSalva = '';
 
     // LÓGICA DE RECOMENDAÇÃO BASEADA EM IDADE E PERFIL (ÁRVORE DE DECISÃO)
     if (interesse === 'hardware' || estilo === 'pratico') {
       if (idade >= 10) {
         oficinaRecomendada = 'Robótica com Arduino (Idade: 10+)';
+        nomeOficinaSalva = 'Robótica com Arduino';
       } else {
         oficinaRecomendada = 'Robótica LEGO (Livre)';
+        nomeOficinaSalva = 'Robótica LEGO';
       }
     } else if (interesse === 'software') {
       if (idade >= 13) {
         oficinaRecomendada = 'Fábrica de Sites (Idade: 13+)';
+        nomeOficinaSalva = 'Fábrica de Sites';
       } else {
-        oficinaRecomendada = 'Informática Básica / App Inventor (Livre)';
+        oficinaRecomendada = 'Robótica LEGO (Livre)';
+        nomeOficinaSalva = 'Robótica LEGO';
       }
     } else if (interesse === 'design' || (interesse === 'jogos' && estilo === 'visual')) {
       if (idade >= 12) {
         oficinaRecomendada = 'Modelagem 3D (Idade: 12+)';
+        nomeOficinaSalva = 'Modelagem 3D';
       } else {
         oficinaRecomendada = 'Desenvolvimento de Jogos (Livre)';
+        nomeOficinaSalva = 'Desenvolvimento de Jogos';
       }
     } else {
-      // Fallback genérico para quem curte lógica e games
       oficinaRecomendada = 'Desenvolvimento de Jogos (Livre)';
+      nomeOficinaSalva = 'Desenvolvimento de Jogos';
+    }
+
+    if (ehAlunoLogado && user?.id && user?.escolaId) {
+      try {
+        await updateAluno(user.escolaId, user.id, {
+          perfilLologico: nomeOficinaSalva,
+        });
+      } catch {
+        // Mantém exibição visual mesmo se offline
+      }
     }
 
     setResultado(`Oficina Recomendada: ${oficinaRecomendada}`);
@@ -141,9 +163,19 @@ const Quiz = () => {
             <div className="quiz-result">
               <h2 className="quiz-result__title">Resultado do Quiz</h2>
               <p className="quiz-result__text">{resultado}</p>
-              <button type="button" className="btn-pill btn-pill--orange" onClick={reiniciar}>
-                Refazer o quiz
-              </button>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <button type="button" className="btn-pill btn-pill--orange" onClick={reiniciar}>
+                  Refazer o quiz
+                </button>
+                {ehAlunoLogado && user?.escolaId && user?.id && (
+                  <Link
+                    to={`/escolas/${user.escolaId}/alunos/${user.id}`}
+                    className="btn-pill btn-pill--blue"
+                  >
+                    Ver meu perfil atualizado
+                  </Link>
+                )}
+              </div>
             </div>
           )}
         </div>

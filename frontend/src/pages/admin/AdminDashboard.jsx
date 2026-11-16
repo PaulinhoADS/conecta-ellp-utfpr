@@ -1,3 +1,4 @@
+// frontend/src/pages/admin/AdminDashboard.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getResumoAdmin } from "../../services/dashboardService";
@@ -6,28 +7,36 @@ import "./AdminDashboard.css";
 const indicadores = [
   { chave: "administradores", rotulo: "Administradores ativos" },
   { chave: "oficinas", rotulo: "Oficinas ativas" },
-  { chave: "escolas", rotulo: "Escolas ativas" },
-  { chave: "alunos", rotulo: "Alunos ativos" },
+  { chave: "escolas", rotulo: "Escolas aprovadas" },
+  { chave: "alunos", rotulo: "Alunos inscritos" },
 ];
 
 const atalhos = [
   {
     id: "oficinas",
     titulo: "Oficinas",
-    descricao: "Consulte as oficinas existentes ou cadastre uma nova.",
+    descricao: "Consulte as oficinas regulares do ELLP ou cadastre uma nova.",
     listagem: "/oficinas",
     nomeListagem: "Ver lista de oficinas",
     criacao: "/oficinas/nova",
     nomeCriacao: "Cadastrar oficina",
   },
   {
+    id: "escolas",
+    titulo: "Escolas Parceiras",
+    descricao: "Gerencie instituições parceiras, aprove cadastros e emita cartas-convite.",
+    listagem: "/escolas",
+    nomeListagem: "Ver lista de escolas",
+    criacao: "/escolas/nova",
+    nomeCriacao: "Cadastrar escola",
+  },
+  {
     id: "administradores",
-    titulo: "Administradores",
-    descricao:
-      "Veja quem tem acesso ao painel ou cadastre outro administrador.",
-    listagem: "/admin/administradores",
+    titulo: "Equipe e Voluntários",
+    descricao: "Veja quem tem acesso ao painel ou cadastre um novo voluntário/professor.",
+    listagem: "/administradores",
     nomeListagem: "Ver lista de administradores",
-    criacao: "/admin/administradores/novo",
+    criacao: "/voluntarios",
     nomeCriacao: "Cadastrar administrador",
   },
 ];
@@ -142,7 +151,7 @@ const AdminDashboard = () => {
                       </p>
                     )}
                     <Link
-                      to="/admin/solicitacoes"
+                      to="/escolas"
                       className="btn-pill btn-pill--blue"
                     >
                       Analisar solicitações

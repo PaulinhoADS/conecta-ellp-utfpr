@@ -1,31 +1,50 @@
-const CHAVE_ARMAZENAMENTO = "conecta-ellp:oficinas";
+// frontend/src/services/oficinasService.js
+const CHAVE_ARMAZENAMENTO = "conecta-ellp:oficinas-v2";
 
 const oficinasIniciais = [
   {
     id: 1,
-    nome: "Programação Visual",
-    tema: "Programação em blocos",
+    nome: "Robótica LEGO",
+    tema: "Física, Engenharia e Programação em Blocos",
     vagas: 20,
     descricao:
-      "Monte soluções arrastando blocos e elementos visuais e veja o resultado ganhar vida na tela, sem precisar decorar comandos.",
+      "Utiliza os kits LEGO Mindstorms para ensinar conceitos de física, matemática, engenharia e lógica de programação de forma lúdica, montando e programando robôs interativos. Indicada para todas as idades.",
     ativa: true,
   },
   {
     id: 2,
-    nome: "Lógica de Programação",
-    tema: "Algoritmos e raciocínio lógico",
-    vagas: 20,
+    nome: "Robótica com Arduino",
+    tema: "Eletrônica Básica e Automação",
+    vagas: 15,
     descricao:
-      "Exercite raciocínio, algoritmos e resolução de problemas. É a base que sustenta qualquer linguagem que você aprender depois.",
+      "Focada em eletrônica básica e automação. Os alunos aprendem a programar placas digitais conectando sensores, luzes LED e pequenos motores. Recomendada a partir de 10 anos.",
     ativa: true,
   },
   {
     id: 3,
-    nome: "Desenvolvimento Web",
-    tema: "HTML, CSS e JavaScript",
+    nome: "Modelagem 3D",
+    tema: "Design Tridimensional e Percepção Espacial",
     vagas: 15,
     descricao:
-      "Dê os primeiros passos construindo páginas com HTML, CSS e JavaScript e publique algo que qualquer pessoa pode acessar.",
+      "Desenvolve a percepção espacial através da criação de objetos digitais tridimensionais em softwares específicos, simulando a base para design e engenharia. Recomendada a partir de 12 anos.",
+    ativa: true,
+  },
+  {
+    id: 4,
+    nome: "Fábrica de Sites",
+    tema: "Desenvolvimento Web (HTML, CSS e JS)",
+    vagas: 20,
+    descricao:
+      "Introdução ao desenvolvimento web, onde os estudantes aprendem a estruturar e criar suas próprias páginas e portfólios na internet. Recomendada a partir de 13 anos.",
+    ativa: true,
+  },
+  {
+    id: 5,
+    nome: "Desenvolvimento de Jogos",
+    tema: "Lógica de Programação e Criação de Games",
+    vagas: 25,
+    descricao:
+      "Oficinas focadas na criação de games, ensinando a lógica de programação por trás das mecânicas, personagens e cenários. Indicada para todas as idades.",
     ativa: true,
   },
 ];
@@ -38,9 +57,7 @@ const criarNoLocalStorage = () => {
 
 export const getOficinas = async () => {
   criarNoLocalStorage();
-  const data = JSON.parse(localStorage.getItem(CHAVE_ARMAZENAMENTO));
-
-  return data;
+  return JSON.parse(localStorage.getItem(CHAVE_ARMAZENAMENTO)) || [];
 };
 
 export const getOficinaById = async (id) => {

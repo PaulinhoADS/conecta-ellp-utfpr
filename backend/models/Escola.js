@@ -2,7 +2,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-// Definindo a tabela 'Escolas'
 const Escola = sequelize.define('Escola', {
   id: {
     type: DataTypes.INTEGER,
@@ -18,16 +17,45 @@ const Escola = sequelize.define('Escola', {
     allowNull: false,
     unique: true,
   },
+  tipo: {
+    type: DataTypes.STRING,
+    defaultValue: 'Escola Pública',
+  },
   endereco: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   telefone: {
     type: DataTypes.STRING,
-  }
+  },
+  email: {
+    type: DataTypes.STRING,
+  },
+  responsavel: {
+    type: DataTypes.STRING,
+  },
+  vagasSolicitadas: {
+    type: DataTypes.INTEGER,
+    defaultValue: 20,
+  },
+  status: {
+    type: DataTypes.STRING,
+    defaultValue: 'pendente',
+  },
+  observacoes: {
+    type: DataTypes.TEXT,
+  },
+  ativa: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+  cartaConviteEmitidaEm: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   tableName: 'escolas',
-  timestamps: true, // Cria automaticamente as colunas createdAt e updatedAt
+  timestamps: true,
 });
 
 module.exports = Escola;

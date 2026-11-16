@@ -1,3 +1,4 @@
+// frontend/src/crud_voluntários/components/FormVoluntario.jsx
 import { useState } from 'react';
 
 export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar }) {
@@ -5,14 +6,17 @@ export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar 
     nome: '',
     email: '',
     telefone: '',
+    tipoAcesso: 'admin',
     ra: '',
     curso: 'Análise e Desenvolvimento de Sistemas',
-    oficinaPref: 'Lógica e Algoritmos',
-    ativo: true
+    oficinaPref: 'Robótica LEGO',
+    ativo: true,
   };
 
   const [formData, setFormData] = useState(voluntarioEdicao || initialState);
   const [erros, setErros] = useState({});
+
+  const isProfessor = formData.tipoAcesso === 'superadmin';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +34,9 @@ export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar 
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       novosErros.email = 'Insira um e-mail válido.';
     }
-    if (!formData.ra.trim()) novosErros.ra = 'O RA é obrigatório.';
+    if (!isProfessor && !formData.ra.trim()) {
+      novosErros.ra = 'O RA é obrigatório para estudantes voluntários.';
+    }
     if (!formData.telefone.trim()) novosErros.telefone = 'O telefone é obrigatório.';
 
     setErros(novosErros);
@@ -40,15 +46,31 @@ export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validarCampos()) {
-      onSalvar(formData);
+      const payload = isProfessor
+        ? {
+            ...formData,
+            ra: formData.ra || 'Docente UTFPR',
+            curso: 'Coordenação / Docente',
+            oficinaPref: 'Coordenação Geral',
+          }
+        : formData;
+      onSalvar(payload);
     }
   };
 
   return (
     <div className="card">
-      <h2>{formData.id ? 'Editar Voluntário' : 'Novo Cadastro de Voluntário'}</h2>
+      <h2>{formData.id ? 'Editar Membro da Equipe' : 'Novo Cadastro de Administrador / Voluntário'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
+          <div className="form-group">
+            <label>Nível de Permissão*</label>
+            <select name="tipoAcesso" value={formData.tipoAcesso || 'admin'} onChange={handleChange}>
+              <option value="admin">Voluntário (Admin)</option>
+              <option value="superadmin">Professor / Coordenador (Superadmin)</option>
+            </select>
+          </div>
+
           <div className="form-group">
             <label>Nome Completo*</label>
             <input
@@ -62,27 +84,15 @@ export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar 
           </div>
 
           <div className="form-group">
-            <label>E-mail*</label>
+            <label>E-mail Institucional*</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="exemplo@alunos.utfpr.edu.br"
+              placeholder="exemplo@utfpr.edu.br"
             />
             {erros.email && <span className="error-msg">{erros.email}</span>}
-          </div>
-
-          <div className="form-group">
-            <label>RA (UTFPR)*</label>
-            <input
-              type="text"
-              name="ra"
-              value={formData.ra}
-              onChange={handleChange}
-              placeholder="a1234567"
-            />
-            {erros.ra && <span className="error-msg">{erros.ra}</span>}
           </div>
 
           <div className="form-group">
@@ -97,37 +107,51 @@ export default function FormVoluntario({ voluntarioEdicao, onSalvar, onCancelar 
             {erros.telefone && <span className="error-msg">{erros.telefone}</span>}
           </div>
 
-          <div className="form-group">
-            <label>Curso</label>
-            <select name="curso" value={formData.curso} onChange={handleChange}>
-              <option value="Análise e Desenvolvimento de Sistemas">Análise e Des. de Sistemas</option>
-              <option value="Engenharia de Software">Engenharia de Software</option>
-              <option value="Engenharia de Computação">Engenharia de Computação</option>
-              <option value="Outro">Outro</option>
-            </select>
-          </div>
+          {!isProfessor && (
+            <>
+              <div className="form-group">
+                <label>RA (UTFPR)*</label>
+                <input
+                  type="text"
+                  name="ra"
+                  value={formData.ra}
+                  onChange={handleChange}
+                  placeholder="a1234567"
+                />
+                {erros.ra && <span className="error-msg">{erros.ra}</span>}
+              </div>
 
-          <div className="form-group">
-            <label>Oficina Preferencial</label>
-            <select name="oficinaPref" value={formData.oficinaPref} onChange={handleChange}>
-              <option value="Lógica e Algoritmos">Lógica e Algoritmos</option>
-              <option value="Robótica">Robótica</option>
-              <option value="Modelagem 3D">Modelagem 3D</option>
-              <option value="Criação de Sites">Criação de Sites</option>
-              <option value="Desenvolvimento de Jogos">Desenvolvimento de Jogos</option>
-            </select>
-          </div>
+              <div className="form-group">
+                <label>Curso</label>
+                <select name="curso" value={formData.curso} onChange={handleChange}>
+                  <option value="Análise e Desenvolvimento de Sistemas">Análise e Des. de Sistemas</option>
+                  <option value="Engenharia de Software">Engenharia de Software</option>
+                  <option value="Engenharia de Computação">Engenharia de Computação</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Oficina Preferencial</label>
+                <select name="oficinaPref" value={formData.oficinaPref} onChange={handleChange}>
+                  <option value="Robótica LEGO">Robótica LEGO</option>
+                  <option value="Robótica com Arduino">Robótica com Arduino</option>
+                  <option value="Modelagem 3D">Modelagem 3D</option>
+                  <option value="Fábrica de Sites">Fábrica de Sites</option>
+                  <option value="Desenvolvimento de Jogos">Desenvolvimento de Jogos</option>
+                </select>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="form-actions">
           <button type="submit" className="btn btn-primary">
-            {formData.id ? 'Atualizar Dados' : 'Cadastrar Voluntário'}
+            {formData.id ? 'Atualizar Dados' : 'Cadastrar Membro'}
           </button>
-          {formData.id && (
-            <button type="button" className="btn btn-secondary" onClick={onCancelar}>
-              Cancelar Edição
-            </button>
-          )}
+          <button type="button" className="btn btn-secondary" onClick={onCancelar}>
+            Cancelar
+          </button>
         </div>
       </form>
     </div>

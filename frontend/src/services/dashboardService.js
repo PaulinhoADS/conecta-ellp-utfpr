@@ -1,34 +1,35 @@
-const resumoMock = {
-  administradores: 3,
-  oficinas: 5,
-  escolas: 8,
-  alunos: 214,
-  solicitacoesPendentes: {
-    total: 4,
-    recentes: [
-      {
-        id: 3,
-        nome: "Escola Rural Exemplo",
-        cidade: "Cornélio Procópio",
-        responsavel: "Carla Exemplo",
-        createdAt: "2026-10-28T15:00:00.000Z",
-      },
-      {
-        id: 4,
-        nome: "Escola Municipal Modelo",
-        cidade: "Cornélio Procópio",
-        responsavel: "Diego Exemplo",
-        createdAt: "2026-10-30T15:00:00.000Z",
-      },
-      {
-        id: 5,
-        nome: "Colégio Modelo",
-        cidade: "Cornélio Procópio",
-        responsavel: "Elisa Exemplo",
-        createdAt: "2026-11-02T15:00:00.000Z",
-      },
-    ],
-  },
-};
+// frontend/src/services/dashboardService.js
+import { getEscolas } from "./escolasService";
+import { getOficinas } from "./oficinasService";
+import { getAlunos } from "./alunosService";
+import { readVoluntarios } from "../crud_voluntários/VoluntariosPage";
 
-export const getResumoAdmin = async () => resumoMock;
+export const getResumoAdmin = async () => {
+  const [escolas, oficinas, alunos] = await Promise.all([
+    getEscolas(),
+    getOficinas(),
+    getAlunos(),
+  ]);
+  const voluntarios = readVoluntarios();
+
+  const pendentes = escolas.filter(
+    (escola) => escola.ativa && escola.status === "pendente"
+  );
+
+  return {
+    administradores: voluntarios.filter((v) => v.ativo).length,
+    oficinas: oficinas.filter((o) => o.ativa).length,
+    escolas: escolas.filter((e) => e.ativa && e.status === "aprovada").length,
+    alunos: alunos.length,
+    solicitacoesPendentes: {
+      total: pendentes.length,
+      recentes: pendentes.slice(0, 3).map((escola) => ({
+        id: escola.id,
+        nome: escola.nome,
+        cidade: "Cornélio Procópio - PR",
+        responsavel: escola.responsavel || "Direção Escolar",
+        createdAt: new Date().toISOString(),
+      })),
+    },
+  };
+};

@@ -3,7 +3,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Escola = require('./Escola');
 
-// Definindo a tabela 'Alunos'
 const Aluno = sequelize.define('Aluno', {
   id: {
     type: DataTypes.INTEGER,
@@ -14,23 +13,29 @@ const Aluno = sequelize.define('Aluno', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   idade: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
   perfilLologico: {
     type: DataTypes.STRING,
-    // Aqui vai entrar o resultado do Quiz (ex: 'Logica Pura', 'Visual', etc)
-    allowNull: true, 
-  }
+    defaultValue: 'Aguardando Quiz Perfil Tech',
+  },
+  senhaTemporaria: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   tableName: 'alunos',
   timestamps: true,
 });
 
-// Relacionamento (1 Escola tem muitos Alunos)
-// João Bosco estruturou a chave estrangeira aqui
-Escola.hasMany(Aluno, { foreignKey: 'escolaId' });
+Escola.hasMany(Aluno, { foreignKey: 'escolaId', as: 'alunos', onDelete: 'CASCADE' });
 Aluno.belongsTo(Escola, { foreignKey: 'escolaId' });
 
 module.exports = Aluno;

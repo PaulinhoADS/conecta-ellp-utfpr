@@ -1,15 +1,15 @@
+// frontend/src/crud_voluntários/components/ListaVoluntario.jsx
 import React, { useState } from 'react';
 
 export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus }) {
   const [busca, setBusca] = useState('');
   const [filtroStatus, setFiltroStatus] = useState('todos');
 
-  // Filtragem local por texto e status (Soft Delete)
   const voluntariosFiltrados = voluntarios.filter((v) => {
-    const atendeBusca = 
+    const atendeBusca =
       v.nome.toLowerCase().includes(busca.toLowerCase()) ||
       v.email.toLowerCase().includes(busca.toLowerCase()) ||
-      v.ra.toLowerCase().includes(busca.toLowerCase());
+      (v.ra && v.ra.toLowerCase().includes(busca.toLowerCase()));
 
     if (filtroStatus === 'ativos') return atendeBusca && v.ativo;
     if (filtroStatus === 'inativos') return atendeBusca && !v.ativo;
@@ -18,9 +18,8 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
 
   return (
     <div className="card">
-      <h3>Voluntários Cadastrados</h3>
-      
-      {/* Barra de Filtros */}
+      <h3>Equipe Administrativa e Voluntários Cadastrados</h3>
+
       <div className="filter-bar">
         <input
           type="text"
@@ -40,16 +39,16 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
         </select>
       </div>
 
-      {/* Tabela de Dados */}
       <div className="table-responsive">
         <table className="voluntarios-table">
           <thead>
             <tr>
               <th>Status</th>
-              <th>Nome</th>
-              <th>RA</th>
+              <th>Nome / Curso</th>
+              <th>Perfil</th>
+              <th>Registro (RA)</th>
               <th>Contato</th>
-              <th>Oficina</th>
+              <th>Oficina / Área</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -67,6 +66,11 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
                     <br />
                     <small>{v.curso}</small>
                   </td>
+                  <td>
+                    <span className="badge badge--tipo">
+                      {v.tipoAcesso === 'superadmin' ? 'Professor (Superadmin)' : 'Voluntário (Admin)'}
+                    </span>
+                  </td>
                   <td>{v.ra}</td>
                   <td>
                     {v.email}
@@ -78,11 +82,10 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
                     <button
                       className="btn btn-warning"
                       onClick={() => onEditar(v)}
-                      title="Editar Voluntário"
+                      title="Editar Membro"
                     >
                       Editar
                     </button>
-                    {/* Botão de Soft Delete / Reativação */}
                     {v.ativo ? (
                       <button
                         className="btn btn-danger"
@@ -95,7 +98,7 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
                       <button
                         className="btn btn-success"
                         onClick={() => onToggleStatus(v.id, true)}
-                        title="Reativar Voluntário"
+                        title="Reativar Membro"
                       >
                         Reativar
                       </button>
@@ -105,8 +108,8 @@ export default function ListaVoluntarios({ voluntarios, onEditar, onToggleStatus
               ))
             ) : (
               <tr>
-                <td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>
-                  Nenhum voluntário encontrado.
+                <td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>
+                  Nenhum membro encontrado.
                 </td>
               </tr>
             )}
