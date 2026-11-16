@@ -6,7 +6,7 @@ import ListaVoluntarios from './components/ListaVoluntario';
 import ToastNotification from './components/ToastNotification';
 import './crud_voluntarios.css';
 
-export const STORAGE_KEY_VOLUNTARIOS = 'conecta-ellp-voluntarios-v2';
+export const STORAGE_KEY_VOLUNTARIOS = 'conecta-ellp-voluntarios-v3';
 
 const equipeInicial = [
   {
@@ -62,6 +62,17 @@ const equipeInicial = [
     ra: 'a2654323',
     curso: 'Análise e Desenvolvimento de Sistemas',
     oficinaPref: 'Desenvolvimento de Jogos',
+    ativo: true,
+  },
+  {
+    id: '6',
+    nome: 'João Bosco Salviano de Carvalho',
+    email: 'joaocarvalho@alunos.utfpr.edu.br',
+    telefone: '(43) 99955-2026',
+    tipoAcesso: 'admin',
+    ra: 'a2654324',
+    curso: 'Análise e Desenvolvimento de Sistemas',
+    oficinaPref: 'Robótica LEGO',
     ativo: true,
   },
 ];
