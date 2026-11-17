@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { getAlunos } from '../services/alunosService';
-import { getEscolas } from '../services/escolasService';
+import { loginRequest } from '../services/authService';
 import './Login.css';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ usuario: '', senha: '' });
   const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -18,100 +18,60 @@ const Login = () => {
     setErro('');
   };
 
-  const autenticarPerfilRapido = (perfil) => {
-    if (perfil === 'superadmin') {
-      login('token-superadmin-ellp', {
-        id: 1,
-        nome: 'Prof. Antonio Carlos (Coordenação)',
-        usuario: 'admin',
-        role: 'superadmin',
-      });
+  const redirecionarPorRole = (user) => {
+    if (user.role === 'superadmin' || user.role === 'admin') {
       navigate('/admin');
-    } else if (perfil === 'admin') {
-      login('token-admin-voluntario', {
-        id: 2,
-        nome: 'Voluntário ELLP (UTFPR)',
-        usuario: 'voluntario',
-        role: 'admin',
-      });
-      navigate('/admin');
-    } else if (perfil === 'escola') {
-      login('token-escola-parceira', {
-        id: 1,
-        nome: 'Colégio Estadual Monteiro Lobato',
-        usuario: 'monteiro.lobato',
-        role: 'escola',
-      });
-      navigate('/escolas/1');
-    } else if (perfil === 'aluno') {
-      login('token-aluno-ellp', {
-        id: 1,
-        escolaId: 1,
-        nome: 'Lucas Gabriel Martins',
-        usuario: 'lucas.martins',
-        role: 'aluno',
-      });
-      navigate('/escolas/1/alunos/1');
+    } else if (user.role === 'escola') {
+      navigate(`/escolas/${user.id}`);
+    } else if (user.role === 'aluno') {
+      navigate(`/escolas/${user.escolaId}/alunos/${user.id}`);
+    } else {
+      navigate('/');
+    }
+  };
+
+  const realizarLoginNaApi = async (usuarioLogin, senhaLogin) => {
+    try {
+      setCarregando(true);
+      setErro('');
+      const dados = await loginRequest(usuarioLogin, senhaLogin);
+      login(dados.token, dados.user);
+      redirecionarPorRole(dados.user);
+    } catch (err) {
+      setErro(
+        err.response?.data?.erro ||
+          'Não foi possível autenticar. Verifique se o servidor Back-end está rodando na porta 3333.'
+      );
+    } finally {
+      setCarregando(false);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userDigitado = credentials.usuario.trim().toLowerCase();
+    await realizarLoginNaApi(credentials.usuario, credentials.senha);
+  };
 
-    if (userDigitado === 'admin' || userDigitado === 'antonio' || userDigitado === 'professor') {
-      autenticarPerfilRapido('superadmin');
-      return;
-    }
-
-    if (userDigitado === 'voluntario') {
-      autenticarPerfilRapido('admin');
-      return;
-    }
-
-    const alunos = await getAlunos();
-    const alunoEncontrado = alunos.find(
-      (a) => String(a.username || '').toLowerCase() === userDigitado
-    );
-    if (alunoEncontrado) {
-      login('token-aluno-ellp', {
-        id: alunoEncontrado.id,
-        escolaId: alunoEncontrado.escolaId,
-        nome: alunoEncontrado.nome,
-        usuario: alunoEncontrado.username,
-        role: 'aluno',
-      });
-      navigate(`/escolas/${alunoEncontrado.escolaId}/alunos/${alunoEncontrado.id}`);
-      return;
-    }
-
-    const escolas = await getEscolas();
-    const escolaEncontrada = escolas.find(
-      (e) =>
-        e.email?.toLowerCase() === userDigitado ||
-        e.nome.toLowerCase().includes(userDigitado)
-    );
-    if (escolaEncontrada) {
-      login('token-escola-parceira', {
-        id: escolaEncontrada.id,
-        nome: escolaEncontrada.nome,
-        usuario: escolaEncontrada.email,
-        role: 'escola',
-      });
-      navigate(`/escolas/${escolaEncontrada.id}`);
-      return;
-    }
-
-    setErro('Usuário não encontrado. Utilize um dos acessos abaixo ou digite "admin" ou "lucas.martins".');
+  const autenticarPerfilRapido = (perfil) => {
+    const mapaCredenciais = {
+      superadmin: { u: 'admin', s: 'ellp12345' },
+      admin: { u: 'pauloleite@alunos.utfpr.edu.br', s: 'ellp12345' },
+      escola: { u: 'direcao@monteirolobato.pr.gov.br', s: 'ellp12345' },
+      aluno: { u: 'lucas.martins', s: 'ellp12345' },
+    };
+    const cred = mapaCredenciais[perfil];
+    if (cred) realizarLoginNaApi(cred.u, cred.s);
   };
 
   return (
     <section className="login-page">
       <div className="login-card">
-        <div className="login-card__header">Acesso ao Sistema</div>
+        <div className="login-card__header">Acesso ao Sistema (JWT)</div>
         <div className="login-card__body">
           <h1 className="login-card__title">Entrar</h1>
-          <p className="login-card__subtitle">Acesse com seu usuário ou selecione um perfil de demonstração abaixo.</p>
+          <p className="login-card__subtitle">
+            Acesse com seu usuário e senha cadastrados no banco de dados.
+          </p>
 
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-field">
@@ -140,7 +100,7 @@ const Login = () => {
                 id="senha"
                 name="senha"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Senha padrão: ellp12345"
                 autoComplete="current-password"
                 value={credentials.senha}
                 onChange={handleChange}
@@ -154,20 +114,45 @@ const Login = () => {
               </p>
             )}
 
-            <button type="submit" className="btn-pill btn-pill--blue login-form__submit">
-              Entrar
+            <button
+              type="submit"
+              className="btn-pill btn-pill--blue login-form__submit"
+              disabled={carregando}
+            >
+              {carregando ? 'Autenticando...' : 'Entrar'}
             </button>
           </form>
 
-          <div style={{ marginTop: '24px', paddingTop: '18px', borderTop: '1px solid #AADCFF' }}>
-            <p style={{ margin: '0 0 10px', fontSize: '12px', fontWeight: 600, color: '#002960', textTransform: 'uppercase' }}>
-              Acesso Rápido (Avaliação / Demonstração):
+          <div
+            style={{
+              marginTop: '24px',
+              paddingTop: '18px',
+              borderTop: '1px solid #AADCFF',
+            }}
+          >
+            <p
+              style={{
+                margin: '0 0 10px',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#002960',
+                textTransform: 'uppercase',
+              }}
+            >
+              Login Rápido via API (Demonstração):
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '8px',
+              }}
+            >
               <button
                 type="button"
                 className="btn-pill btn-pill--outline-dark btn-pill--small"
                 onClick={() => autenticarPerfilRapido('superadmin')}
+                disabled={carregando}
               >
                 Coordenação
               </button>
@@ -175,6 +160,7 @@ const Login = () => {
                 type="button"
                 className="btn-pill btn-pill--outline-dark btn-pill--small"
                 onClick={() => autenticarPerfilRapido('admin')}
+                disabled={carregando}
               >
                 Voluntário
               </button>
@@ -182,6 +168,7 @@ const Login = () => {
                 type="button"
                 className="btn-pill btn-pill--outline-dark btn-pill--small"
                 onClick={() => autenticarPerfilRapido('escola')}
+                disabled={carregando}
               >
                 Escola Parceira
               </button>
@@ -189,6 +176,7 @@ const Login = () => {
                 type="button"
                 className="btn-pill btn-pill--outline-dark btn-pill--small"
                 onClick={() => autenticarPerfilRapido('aluno')}
+                disabled={carregando}
               >
                 Estudante
               </button>

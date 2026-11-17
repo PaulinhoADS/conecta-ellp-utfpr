@@ -1,65 +1,66 @@
-import axios from "axios";
+// frontend/src/contexts/AuthContext.jsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 const AuthContext = createContext();
 
-const CHAVE_SEED_SUPERUSER = "conecta-ellp:superuser-seeded";
-
-const garantirSuperuserNoLocalStorage = () => {
-  if (!localStorage.getItem(CHAVE_SEED_SUPERUSER)) {
-    const superuserPadrao = {
-      id: 1,
-      nome: "Administrador ELLP",
-      usuario: "admin",
-      role: "superadmin",
-    };
-    localStorage.setItem("token", "dev-token-superuser-ellp");
-    localStorage.setItem("user", JSON.stringify(superuserPadrao));
-    localStorage.setItem(CHAVE_SEED_SUPERUSER, "true");
-  }
-};
-
 const AuthProvider = ({ children }) => {
-  garantirSuperuserNoLocalStorage();
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const tokenSalvo = localStorage.getItem("token");
+  const tokenInicial =
+    tokenSalvo && tokenSalvo.startsWith("eyJ") ? tokenSalvo : null;
+
+  const [token, setToken] = useState(tokenInicial);
+  const [user, setUser] = useState(() => {
+    if (!tokenInicial) return null;
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  });
   const navigate = useNavigate();
 
+  // Faz auto-login real na API como Superadmin na primeira abertura para facilitar avaliação
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem("token", token);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("token");
+    const jaDeslogouManualmente = sessionStorage.getItem("conecta-ellp:logout-manual");
+    if (!token && !jaDeslogouManualmente) {
+      api
+        .post("/login", { usuario: "admin", senha: "ellp12345" })
+        .then((res) => {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          setToken(res.data.token);
+          setUser(res.data.user);
+        })
+        .catch(() => {
+          // Caso o backend ainda não tenha subido, aguarda login manual
+        });
     }
   }, [token]);
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
-
   const handleLogin = (newToken, newUser) => {
+    sessionStorage.removeItem("conecta-ellp:logout-manual");
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("user", JSON.stringify(newUser));
     setToken(newToken);
     setUser(newUser);
   };
 
   const handleLogout = () => {
+    sessionStorage.setItem("conecta-ellp:logout-manual", "true");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setToken(null);
     setUser(null);
-    navigate("/");
+    navigate("/login");
   };
 
   const contextValue = useMemo(
     () => ({
       token,
       user,
-      isAuthenticated: !!token,
+      isAuthenticated: Boolean(token && user),
       login: handleLogin,
       logout: handleLogout,
       hasRole: (allowedRoles) => {
@@ -70,7 +71,7 @@ const AuthProvider = ({ children }) => {
         return listaRoles.includes(user.role);
       },
     }),
-    [token, user],
+    [token, user]
   );
 
   return (
@@ -78,8 +79,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default AuthProvider;

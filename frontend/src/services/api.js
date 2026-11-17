@@ -1,9 +1,16 @@
 // frontend/src/services/api.js
 import axios from 'axios';
 
-// Victor configurou a base da API para apontar para o nosso backend local
 const api = axios.create({
-  baseURL: 'http://localhost:3333', // A mesma porta definida no .env do backend
+  baseURL: 'http://localhost:3333',
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default api;

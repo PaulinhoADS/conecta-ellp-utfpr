@@ -1,6 +1,7 @@
 // backend/models/Administrador.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Usuario = require('./Usuario');
 
 const Administrador = sequelize.define('Administrador', {
   id: {
@@ -8,21 +9,18 @@ const Administrador = sequelize.define('Administrador', {
     autoIncrement: true,
     primaryKey: true,
   },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+    references: { model: 'usuarios', key: 'id' },
+  },
   nome: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
   telefone: {
     type: DataTypes.STRING,
-  },
-  tipoAcesso: {
-    type: DataTypes.STRING,
-    defaultValue: 'admin', // 'superadmin' (Professor) ou 'admin' (Voluntário)
   },
   ra: {
     type: DataTypes.STRING,
@@ -41,5 +39,8 @@ const Administrador = sequelize.define('Administrador', {
   tableName: 'administradores',
   timestamps: true,
 });
+
+Usuario.hasOne(Administrador, { foreignKey: 'userId', as: 'administrador', onDelete: 'CASCADE' });
+Administrador.belongsTo(Usuario, { foreignKey: 'userId', as: 'usuario' });
 
 module.exports = Administrador;

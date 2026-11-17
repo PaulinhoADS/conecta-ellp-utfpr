@@ -20,6 +20,7 @@ const Oficina = sequelize.define('Oficina', {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 20,
+    validate: { min: 1 },
   },
   descricao: {
     type: DataTypes.TEXT,

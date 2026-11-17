@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAlunoById } from "../../services/alunosService";
+import { getAlunoById, updateAluno } from "../../services/alunosService";
 import { getEscolaById } from "../../services/escolasService";
 import { useAuth } from "../../contexts/AuthContext";
 import ModalRedefinirSenha from "../../components/modal-redefiinir-senha/ModalRedefinirSenha";
@@ -54,11 +54,13 @@ const AlunoDetalhe = () => {
     };
   }, [escolaId, id]);
 
-  const handleRedefinirSenha = () => {
+  const handleRedefinirSenha = async () => {
     if (ehAlunoLogado) {
       setModalSenhaAberto(true);
     } else {
-      setSenhaGerada(generatePassword());
+      const nova = generatePassword(10);
+      await updateAluno(escolaId, id, { novaSenhaTemporaria: nova });
+      setSenhaGerada(nova);
     }
   };
 
