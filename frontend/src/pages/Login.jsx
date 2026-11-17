@@ -55,7 +55,7 @@ const Login = () => {
   const autenticarPerfilRapido = (perfil) => {
     const mapaCredenciais = {
       superadmin: { u: 'admin', s: 'ellp12345' },
-      admin: { u: 'pauloleite@alunos.utfpr.edu.br', s: 'ellp12345' },
+      admin: { u: 'paulocesarleite@alunos.utfpr.edu.br', s: 'ellp12345' },
       escola: { u: 'direcao@monteirolobato.pr.gov.br', s: 'ellp12345' },
       aluno: { u: 'lucas.martins', s: 'ellp12345' },
     };
