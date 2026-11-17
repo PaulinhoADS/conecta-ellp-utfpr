@@ -70,7 +70,7 @@ Caso deseje testar a tela de Login (`/login`) ou alternar entre as visões de ca
 | Perfil de Acesso | Usuário para Login (`login`) | Senha Padrão | Papel (`role`) | O que pode acessar e testar |
 | :--- | :--- | :--- | :--- | :--- |
 | **Coordenação (Prof. Antonio)** | `admin` | `ellp12345` | `superadmin` | Acesso total: Dashboard, Escolas, Carta-Convite, Oficinas, Equipe e Alunos. |
-| **Estudante Voluntário** | `pauloleite@alunos.utfpr.edu.br` | `ellp12345` | `admin` | Gestão operacional do Dashboard, Oficinas, Escolas e Equipe. |
+| **Estudante Voluntário** | `paulocesarleite@alunos.utfpr.edu.br` | `ellp12345` | `admin` | Gestão operacional do Dashboard, Oficinas, Escolas e Equipe. |
 | **Escola Parceira** | `direcao@monteirolobato.pr.gov.br` | `ellp12345` | `escola` | Acesso restrito ao painel da própria escola (`/escolas/1`) e gestão de seus alunos. |
 | **Estudante (Aluno)** | `lucas.martins` | `ellp12345` | `aluno` | Acesso restrito ao próprio perfil (`/escolas/1/alunos/1`), redefinição de senha e Quiz. |
 
