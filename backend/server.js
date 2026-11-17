@@ -87,8 +87,8 @@ const popularBancoInicial = async () => {
     { login: 'admin', role: 'superadmin', nome: 'Prof. Antonio Carlos Fernandes da Silva', telefone: '(43) 3520-4000', ra: 'Docente Coordenador', curso: 'Coordenação do Programa ELLP', oficinaPref: 'Coordenação Geral' },
     { login: 'paulocesarleite@alunos.utfpr.edu.br', role: 'admin', nome: 'Paulo Cesar Leite', telefone: '(43) 98436-1403', ra: 'a2706512', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Fábrica de Sites' },
     { login: 'carlosandrade.2024@alunos.utfpr.edu.br', role: 'admin', nome: 'Carlos Henrique de Andrade', telefone: '(43) 99185-0271', ra: 'a2706350', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Robótica com Arduino' },
-    { login: 'higorclaro@alunos.utfpr.edu.br', role: 'admin', nome: 'Higor Claro da Silva', telefone: '(43) 99837-2158', ra: 'a2576139', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Modelagem 3D' },
-    { login: 'nevesv@alunos.utfpr.edu.br', role: 'admin', nome: 'Victor Hugo Concolato Neves', telefone: '(44) 99941-0088', ra: 'a2654323', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Desenvolvimento de Jogos' },
+    { login: 'higorclaro@alunos.utfpr.edu.br', role: 'admin', nome: 'Higor Claro da Silva', telefone: '(43) 99837-2158', ra: 'a2717387', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Modelagem 3D' },
+    { login: 'nevesv@alunos.utfpr.edu.br', role: 'admin', nome: 'Victor Hugo Concolato Neves', telefone: '(44) 99941-0088', ra: 'a2576139', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Desenvolvimento de Jogos' },
     { login: 'jboscos.carvalho@gmail.com', role: 'admin', nome: 'João Bosco Salviano de Carvalho', telefone: '(67) 9999-3727', ra: 'a1915452', curso: 'Análise e Desenvolvimento de Sistemas', oficinaPref: 'Robótica LEGO' },
   ];
 
